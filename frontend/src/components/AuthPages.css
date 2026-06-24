@@ -5,7 +5,9 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  width: 100vw;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 100%;
   background: var(--bg-color);
   cursor: pointer;
   user-select: none;
@@ -38,6 +40,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   max-width: 100%;
   padding: 1rem;
@@ -341,55 +344,65 @@
   .auth-page-container {
     width: 100%;
     max-width: 100%;
-    padding: 1rem 0.75rem;
+    padding: 0.75rem 0.5rem;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 
   .auth-card {
-    padding: 2.25rem 1.25rem;
+    padding: 1.5rem 1.25rem;
   }
 
   .auth-form-card {
-    padding: 2.25rem 1.25rem;
+    padding: 1.5rem 1.25rem;
   }
 
   .auth-card-title {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
   }
 
   .auth-form-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.35rem;
+    margin-bottom: 0.25rem;
   }
 
   .auth-card-description {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem 0.25rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    padding: 0.25rem 0;
   }
 
   .auth-form-header {
-    margin-bottom: 1.5rem;
-    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
   }
 
   .auth-back-btn {
-    top: 1rem;
-    left: 1rem;
+    top: 0.75rem;
+    left: 0.75rem;
   }
 
   .auth-forgot-password-link-wrapper {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
 
   .auth-switch-prompt {
-    margin-top: 1.25rem;
+    margin-top: 1rem;
   }
 
   .welcome-logo-wrapper {
     padding: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.875rem !important;
+  }
+
+  .mb-2rem {
+    margin-bottom: 1.25rem !important;
   }
 }
 
