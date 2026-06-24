@@ -14,8 +14,7 @@ const AppContent = () => {
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: '100vh',
-          minHeight: '100dvh',
-          width: '100%',
+          width: '100vw',
           gap: '1rem',
           background: 'var(--bg-color)',
         }}
