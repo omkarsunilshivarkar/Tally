@@ -193,21 +193,41 @@ export const useDashboardState = () => {
 
       if (res.ok) {
         const parsedExpense = await res.json();
-        // Immediately add to DB
-        const saveRes = await fetch(`${API_URL}/expenses`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(parsedExpense),
-        });
+        
+        if (activeMobileView === 'add-expense') {
+          // 1. Add Expense Tab: Pre-fill the manual form fields for review
+          let fullDescription = parsedExpense.description || '';
+          if (parsedExpense.merchant && parsedExpense.merchant !== 'Unknown') {
+            if (!fullDescription.toLowerCase().includes(parsedExpense.merchant.toLowerCase())) {
+              fullDescription = `${parsedExpense.merchant} - ${fullDescription}`;
+            }
+          }
 
-        if (saveRes.ok) {
+          setManualForm({
+            amount: parsedExpense.amount ? parsedExpense.amount.toString() : '',
+            category: parsedExpense.category || 'Others',
+            description: fullDescription,
+            date: parsedExpense.date || new Date().toISOString().split('T')[0],
+          });
+
           setQuickLogText('');
-          fetchDashboardData();
         } else {
-          setError('Parsed successfully, but failed to save in database.');
+          // 2. Home Tab or Desktop View: Directly log it into the database instantly
+          const saveRes = await fetch(`${API_URL}/expenses`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(parsedExpense),
+          });
+
+          if (saveRes.ok) {
+            setQuickLogText('');
+            fetchDashboardData();
+          } else {
+            setError('Parsed successfully, but failed to save in database.');
+          }
         }
       } else {
         setError('Could not understand Quick Log command.');

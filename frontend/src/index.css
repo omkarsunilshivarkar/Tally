@@ -241,11 +241,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-input {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--btn-secondary-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
+  color: var(--text-primary);
   transition: var(--transition-fast);
   outline: none;
 }

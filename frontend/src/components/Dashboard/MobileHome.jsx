@@ -1,6 +1,7 @@
 import React from 'react';
-import { TrendingUp, Trash2 } from 'lucide-react';
+import { TrendingUp, Trash2, Brain, Loader2, Send } from 'lucide-react';
 import './MobileHome.css';
+import './MobileQuickLog.css';
 
 export const MobileHome = ({
   radius,
@@ -14,9 +15,39 @@ export const MobileHome = ({
   filteredTotalSpending,
   currentFilteredExpenses,
   handleDeleteExpense,
+  handleQuickLog,
+  quickLogText,
+  setQuickLogText,
+  quickLogLoading,
 }) => {
   return (
     <div className="mobile-view-fade">
+      {/* Quick Log Sparkle Bar */}
+      <section className="mobile-quick-log-section">
+        <form onSubmit={handleQuickLog} className="ai-log-container">
+          <Brain className="ai-log-sparkle" size={18} />
+          <input
+            type="text"
+            className="ai-log-input"
+            placeholder="AI Command: 'spent ₹250 at KFC today'..."
+            value={quickLogText}
+            onChange={(e) => setQuickLogText(e.target.value)}
+            disabled={quickLogLoading}
+          />
+          {quickLogLoading ? (
+            <div className="ai-log-loading-wrapper">
+              <Loader2 size={16} className="ai-log-sparkle spin-loader" />
+            </div>
+          ) : (
+            quickLogText.trim() && (
+              <button type="submit" className="ai-log-submit-btn" title="Submit command">
+                <Send size={14} />
+              </button>
+            )
+          )}
+        </form>
+      </section>
+
       {/* Featured Goal & Activity Split Card */}
       <div className="mobile-featured-card">
         <div className="mobile-card-left">
@@ -81,7 +112,9 @@ export const MobileHome = ({
       <div className="mobile-transactions-section">
         <div className="mobile-flex-space-between">
           <h4 className="mobile-recent-tx-title">Recent Transactions</h4>
-          <span className="mobile-recent-tx-count">{currentFilteredExpenses.length} found</span>
+          <span className="mobile-recent-tx-count">
+            {currentFilteredExpenses.length > 5 ? 'Latest 5' : `${currentFilteredExpenses.length} found`}
+          </span>
         </div>
 
         {currentFilteredExpenses.length === 0 ? (
@@ -90,7 +123,7 @@ export const MobileHome = ({
           </div>
         ) : (
           <div className="mobile-tx-list">
-            {currentFilteredExpenses.map((exp) => (
+            {currentFilteredExpenses.slice(0, 5).map((exp) => (
               <div className="mobile-tx-card" key={exp.id}>
                 <div className="mobile-tx-icon">
                   {getCategoryIcon(exp.category)}

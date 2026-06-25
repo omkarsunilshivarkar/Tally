@@ -4,7 +4,7 @@ import { eq, and, desc } from 'drizzle-orm';
 import { db } from '../db/db.js';
 import { expenses } from '../db/schema.js';
 import { authenticateToken } from '../middleware/auth.js';
-import { scanReceipt, parseQuickLog } from '../services/gemini.js';
+import { scanReceipt, parseQuickLog } from '../services/groq.js';
 
 const router = Router();
 

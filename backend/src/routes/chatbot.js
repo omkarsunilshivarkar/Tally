@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db/db.js';
 import { expenses, budgets } from '../db/schema.js';
 import { authenticateToken } from '../middleware/auth.js';
-import { getFinancialAdvice } from '../services/gemini.js';
+import { getFinancialAdvice } from '../services/groq.js';
 
 const router = Router();
 

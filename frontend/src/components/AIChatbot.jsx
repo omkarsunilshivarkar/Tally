@@ -3,6 +3,32 @@ import { Send, X, Bot, Sparkles, Loader2 } from 'lucide-react';
 import { API_URL } from '../context/AuthContext';
 import './AIChatbot.css';
 
+const TallyLogo = ({ size = 20, className = '' }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 100 100"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={`${className} tally-logo-svg`}
+    style={{ transform: 'none' }}
+  >
+    {/* Trend Line */}
+    <path d="M22 55 L42 35 L58 45 L78 20" />
+    {/* Arrow Head */}
+    <path d="M66 20 H78 V32" />
+    {/* Bar 1 */}
+    <rect x="26" y="64" width="10" height="16" rx="2" fill="none" />
+    {/* Bar 2 */}
+    <rect x="44" y="52" width="10" height="28" rx="2" fill="none" />
+    {/* Bar 3 */}
+    <rect x="62" y="38" width="10" height="42" rx="2" fill="none" />
+  </svg>
+);
+
 // Quick-start suggestion chips
 const SUGGESTION_CHIPS = [
   'How much have I spent this month?',
@@ -71,7 +97,7 @@ I have full access to your transactions and budget limits. Ask me anything, for 
         ...prev,
         {
           role: 'assistant',
-          content: 'âš ï¸ Apologies, I could not retrieve advice. Please check that the backend server is running.',
+          content: '⚠️  Apologies, I could not retrieve advice. Please check that the backend server is running.',
         },
       ]);
     } finally {
@@ -127,34 +153,31 @@ I have full access to your transactions and budget limits. Ask me anything, for 
 
   return (
     <div
-      className="chat-drawer"
+      className={`chat-drawer ${isOpen ? 'open' : ''}`}
       style={{
-        transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
         display: 'flex',
       }}
     >
+      {/* Mobile Drag Handle */}
+      <div className="mobile-drag-handle" />
+
       {/* Header */}
       <div className="chat-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: 'var(--radius-md)',
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid var(--border-color)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: 'none',
-            }}
-          >
-            <Bot size={20} color="white" />
+          <div className="chat-header-logo-box">
+            <TallyLogo size={20} />
           </div>
           <div>
             <h4 style={{ fontSize: '1.05rem', fontWeight: 600 }}>Tally Advisor</h4>
-            <span style={{ fontSize: '0.75rem', color: 'var(--secondary-color)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              <Sparkles size={10} /> Active spending context
+            <span style={{ fontSize: '0.75rem', color: 'var(--secondary-color)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span style={{ 
+                display: 'inline-block', 
+                width: '6px', 
+                height: '6px', 
+                borderRadius: '50%', 
+                backgroundColor: '#10b981', 
+                boxShadow: '0 0 6px #10b981' 
+              }} /> Online and ready to help
             </span>
           </div>
         </div>

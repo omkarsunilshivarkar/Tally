@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { MobileHeader } from './MobileHeader';
 import { MobileNavigation } from './MobileNavigation';
 import { MobileHome } from './MobileHome';
@@ -50,6 +50,12 @@ export const MobileLayout = ({ state }) => {
     handleManualSubmit,
     theme,
     toggleTheme,
+    handleQuickLog,
+    quickLogText,
+    setQuickLogText,
+    quickLogLoading,
+    error,
+    setIsChatOpen,
   } = state;
 
   return (
@@ -64,10 +70,18 @@ export const MobileLayout = ({ state }) => {
         spendPercent={spendPercent}
         totalBudget={totalBudget}
         ArrowLeft={ArrowLeft}
+        setIsChatOpen={setIsChatOpen}
       />
 
       {/* Bottom Curved Body Area */}
       <div className="mobile-curved-container">
+        {error && (
+          <div className="error-banner" style={{ marginBottom: '1.25rem' }}>
+            <AlertTriangle size={18} className="error-banner-icon" />
+            <span>{error}</span>
+          </div>
+        )}
+
         {activeMobileView === 'home' && (
           <MobileHome
             radius={radius}
@@ -81,6 +95,10 @@ export const MobileLayout = ({ state }) => {
             filteredTotalSpending={filteredTotalSpending}
             currentFilteredExpenses={currentFilteredExpenses}
             handleDeleteExpense={handleDeleteExpense}
+            handleQuickLog={handleQuickLog}
+            quickLogText={quickLogText}
+            setQuickLogText={setQuickLogText}
+            quickLogLoading={quickLogLoading}
           />
         )}
 
@@ -119,6 +137,10 @@ export const MobileLayout = ({ state }) => {
             setManualForm={setManualForm}
             CATEGORIES={CATEGORIES}
             handleManualSubmit={handleManualSubmit}
+            handleQuickLog={handleQuickLog}
+            quickLogText={quickLogText}
+            setQuickLogText={setQuickLogText}
+            quickLogLoading={quickLogLoading}
           />
         )}
 

@@ -1,17 +1,12 @@
-import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = process.env.GROQ_API_KEY;
 
-// Initialize GoogleGenAI client if API key is provided
-let ai = null;
-if (apiKey) {
-  ai = new GoogleGenAI({ apiKey });
-} else {
+if (!apiKey) {
   console.warn(
-    'âš ï¸ GEMINI_API_KEY is not defined in the environment variables. The backend will use mock data for AI features.'
+    '⚠️  GROQ_API_KEY is not defined in the environment variables. The backend will use mock data for AI features.'
   );
 }
 
@@ -27,19 +22,19 @@ const CATEGORIES = [
 ];
 
 /**
- * Scan a receipt image using Gemini API
+ * Scan a receipt image using Groq API
  */
 export async function scanReceipt(fileBuffer, mimeType) {
   const currentDate = new Date().toISOString().split('T')[0];
 
-  if (!ai) {
-    // Return mock data if Gemini API is not configured
+  if (!apiKey) {
+    // Return mock data if Groq API is not configured
     return {
       merchant: 'Starbucks (Mock)',
       amount: 14.50,
       category: 'Food & Dining',
       date: currentDate,
-      description: 'Coffee & Blueberry Muffin (Mock - Set GEMINI_API_KEY for real scanning)',
+      description: 'Coffee & Blueberry Muffin (Mock - Set GROQ_API_KEY for real scanning)',
     };
   }
 
@@ -54,24 +49,41 @@ Return a JSON object conforming exactly to this schema:
   "description": "string (brief summary of items purchased)"
 }`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [
-        {
-          inlineData: {
-            data: fileBuffer.toString('base64'),
-            mimeType,
-          },
-        },
-        prompt,
-      ],
-      config: {
-        responseMimeType: 'application/json',
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
       },
+      body: JSON.stringify({
+        model: 'llama-3.2-11b-vision-preview',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: prompt },
+              {
+                type: 'image_url',
+                image_url: {
+                  url: `data:${mimeType};base64,${fileBuffer.toString('base64')}`,
+                },
+              },
+            ],
+          },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.1,
+      }),
     });
 
-    const text = response.text;
-    if (!text) throw new Error('Empty response from Gemini API');
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Groq API returned status ${res.status}: ${errText}`);
+    }
+
+    const resData = await res.json();
+    const text = resData.choices?.[0]?.message?.content;
+    if (!text) throw new Error('Empty response from Groq API');
 
     const parsed = JSON.parse(text);
     
@@ -83,7 +95,7 @@ Return a JSON object conforming exactly to this schema:
 
     return parsed;
   } catch (error) {
-    console.error('Error scanning receipt with Gemini:', error);
+    console.error('Error scanning receipt with Groq:', error);
     // Fallback in case of parsing/network errors
     return {
       merchant: 'Receipt Scan Error',
@@ -96,12 +108,12 @@ Return a JSON object conforming exactly to this schema:
 }
 
 /**
- * Parse quick text command using Gemini API
+ * Parse quick text command using Groq API
  */
 export async function parseQuickLog(textCommand) {
   const currentDate = new Date().toISOString().split('T')[0];
 
-  if (!ai) {
+  if (!apiKey) {
     // Simple regex fallback for local test
     const amountMatch = textCommand.match(/\$?(\d+(\.\d{2})?)/);
     const amount = amountMatch ? parseFloat(amountMatch[1]) : 10.00;
@@ -120,7 +132,7 @@ export async function parseQuickLog(textCommand) {
       amount,
       category: 'Others',
       date: currentDate,
-      description: textCommand + ' (Mock - Set GEMINI_API_KEY for real AI parsing)',
+      description: textCommand + ' (Mock - Set GROQ_API_KEY for real AI parsing)',
     };
   }
 
@@ -136,16 +148,33 @@ Return a JSON object conforming exactly to this schema:
   "description": "string (clean explanation of what was bought)"
 }`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
       },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.1,
+      }),
     });
 
-    const text = response.text;
-    if (!text) throw new Error('Empty response from Gemini API');
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Groq API returned status ${res.status}: ${errText}`);
+    }
+
+    const resData = await res.json();
+    const text = resData.choices?.[0]?.message?.content;
+    if (!text) throw new Error('Empty response from Groq API');
 
     const parsed = JSON.parse(text);
     parsed.amount = Number(parsed.amount) || 0;
@@ -155,7 +184,7 @@ Return a JSON object conforming exactly to this schema:
 
     return parsed;
   } catch (error) {
-    console.error('Error parsing quick-log with Gemini:', error);
+    console.error('Error parsing quick-log with Groq:', error);
     return {
       merchant: 'Quick Log',
       amount: 0.00,
@@ -170,13 +199,13 @@ Return a JSON object conforming exactly to this schema:
  * AI Financial Chatbot advisor
  */
 export async function getFinancialAdvice(chatHistory, expensesContext, budgetsContext) {
-  if (!ai) {
+  if (!apiKey) {
     return `### Smart Financial Advisor (Mock Mode)
-It looks like **GEMINI_API_KEY** is not configured. Here is some general financial advice:
+It looks like **GROQ_API_KEY** is not configured. Here is some general financial advice:
 
 *   **Create a Budget:** Always plan your categories. Try to keep your "Others" category under 10% of total spending.
 *   **Track Patterns:** Looking at your mock data, make sure your income exceeds expenses.
-*   **AI Tip:** Configure your Gemini API key in the environment to get customized analytics of your real transactions!`;
+*   **AI Tip:** Configure your Groq API key in the environment to get customized analytics of your real transactions!`;
   }
 
   try {
@@ -199,19 +228,41 @@ Rules:
 4. Do not make up transactions outside of the context provided above.
 5. If there is no data, explain that they can start by adding expenses or scanning receipts.`;
 
-    const chat = ai.chats.create({
-      model: 'gemini-2.5-flash',
-      history: chatHistory.slice(0, -1), // Everything except the latest message
+    // Map history to OpenAI/Groq compatible structure
+    const mappedMessages = chatHistory.map((msg) => ({
+      role: msg.role === 'model' ? 'assistant' : 'user',
+      content: msg.parts[0].text,
+    }));
+
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...mappedMessages,
+    ];
+
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages,
+        temperature: 0.7,
+      }),
     });
 
-    const latestMessage = chatHistory[chatHistory.length - 1].parts[0].text;
-    const response = await chat.sendMessage({
-      message: `${systemPrompt}\n\nUser Question: ${latestMessage}`,
-    });
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Groq API returned status ${res.status}: ${errText}`);
+    }
 
-    return response.text || 'I analyzed your query, but could not formulate a response. Please try again.';
+    const resData = await res.json();
+    const text = resData.choices?.[0]?.message?.content;
+    
+    return text || 'I analyzed your query, but could not formulate a response. Please try again.';
   } catch (error) {
-    console.error('Error getting financial advice from Gemini:', error);
+    console.error('Error getting financial advice from Groq:', error);
     return 'Apologies, I encountered an issue analyzing your data. Please check back shortly.';
   }
 }

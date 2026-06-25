@@ -12,6 +12,26 @@
     align-items: center;
     margin-bottom: 1.75rem;
   }
+  
+  .mobile-chat-btn {
+    background: var(--btn-secondary-bg);
+    border: 1px solid var(--border-glow);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-neon);
+    transition: var(--transition-fast);
+  }
+
+  .mobile-chat-btn:active {
+    background: var(--btn-secondary-hover);
+    transform: scale(0.9);
+  }
 
   .mobile-greeting-subtitle {
     font-family: var(--font-sans);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Coins, IndianRupee, ArrowLeft } from 'lucide-react';
+import { Coins, IndianRupee, ArrowLeft, Bot } from 'lucide-react';
 import './MobileHeader.css';
 
 export const MobileHeader = ({
@@ -10,6 +10,7 @@ export const MobileHeader = ({
   totalSpending,
   spendPercent,
   totalBudget,
+  setIsChatOpen,
 }) => {
   if (activeMobileView === 'home') {
     return (
@@ -19,6 +20,10 @@ export const MobileHeader = ({
             <p className="mobile-greeting-subtitle">{getGreeting()}</p>
             <h2 className="mobile-greeting-title">Hi, Welcome Back</h2>
           </div>
+          
+          <button className="mobile-chat-btn" onClick={() => setIsChatOpen(true)} title="AI Advisor">
+            <Bot size={20} />
+          </button>
         </header>
 
         <section className="mobile-metrics-row">
