@@ -161,7 +161,8 @@
 
   .mobile-tx-date {
     font-family: var(--font-subtext);
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 500;
     color: var(--text-muted);
     margin: 0;
   }
@@ -196,7 +197,7 @@
 
   .mobile-flex-gap-0-5 {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   .mobile-flex-space-between {
