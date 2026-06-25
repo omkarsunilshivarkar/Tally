@@ -108,6 +108,7 @@
   .mobile-btn-micro {
     padding: 0.25rem 0.5rem !important;
     font-size: 14px !important;
+    margin-right: 4px;
   }
 
   .mobile-text-micro-muted {
@@ -141,7 +142,7 @@
     font-size: 14px !important;
     letter-spacing: 1px;
     font-weight: 500;
-    width: 70px !important;
+    width: 85px !important;
     margin: 0 !important;
   }
 
