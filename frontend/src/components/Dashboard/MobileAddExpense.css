@@ -9,7 +9,7 @@
   }
 
   .mobile-input-label {
-    font-size: 14px !important;
+    font-size: 18px !important;
     font-weight: 500;
     margin-bottom: 4px;
     display: block;
@@ -17,7 +17,7 @@
   }
 
   .mobile-input-compact {
-    font-size: 12px !important;
+    font-size: 16px !important;
     font-weight: 500 !important;
     padding: 0.5rem 0.75rem !important;
     background: var(--surface-color) !important;

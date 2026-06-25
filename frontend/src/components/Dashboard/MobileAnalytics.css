@@ -32,7 +32,7 @@
   }
 
   .mobile-section-title {
-    font-size: 18px;
+    font-size: 18px !important;
     margin-bottom: 1rem;
   }
 
@@ -97,7 +97,7 @@
   .mobile-budget-item-header {
     display: flex;
     justify-content: space-between;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
   }
 
