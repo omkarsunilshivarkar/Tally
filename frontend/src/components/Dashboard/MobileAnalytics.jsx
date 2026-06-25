@@ -152,7 +152,7 @@ export const MobileAnalytics = ({
               <div key={cat} className="mobile-budget-item-card">
                 <div className="mobile-budget-item-header">
                   <span>{cat}</span>
-                  <span className={isOver ? 'text-danger' : ''}>
+                  <span className={`mobile-budget-item-amount ${isOver ? 'text-danger' : ''}`}>
                     ₹{spent.toFixed(0)} / ₹{limit > 0 ? limit.toFixed(0) : '—'}
                   </span>
                 </div>

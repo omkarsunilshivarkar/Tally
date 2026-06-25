@@ -14,7 +14,7 @@
   }
 
   .mobile-input-label {
-    font-size: 14px !important;
+    font-size: 16px !important;
     font-weight: 500;
     margin-bottom: 4px;
     display: block;
@@ -22,7 +22,7 @@
   }
 
   .mobile-input-compact {
-    font-size: 12px !important;
+    font-size: 14px !important;
     padding: 0.5rem 0.75rem !important;
     background: var(--surface-color) !important;
   }
@@ -32,7 +32,7 @@
   }
 
   .mobile-section-title {
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 1rem;
   }
 
@@ -61,7 +61,7 @@
     gap: 0.25rem;
     max-height: 120px;
     overflow-y: auto;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 500;
   }
 
@@ -89,7 +89,7 @@
 
   .mobile-budget-item-card {
     background: rgba(255, 255, 255, 0.01);
-    padding: 0.75rem 0.75rem;
+    padding: 1rem 0.75rem;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
   }
@@ -97,8 +97,14 @@
   .mobile-budget-item-header {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
+  }
+
+  .mobile-budget-item-amount {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
   }
 
   .mobile-progress-bar-container-compact {
