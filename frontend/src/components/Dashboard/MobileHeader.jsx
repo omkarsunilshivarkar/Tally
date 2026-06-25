@@ -51,7 +51,7 @@ export const MobileHeader = ({
                 width: `${spendPercent}%`,
                 background: spendPercent > 90
                   ? 'linear-gradient(90deg, #ff4d4d, #ff6b6b)'
-                  : 'linear-gradient(90deg, rgba(255, 255, 255, 0.8), #ffffff)'
+                  : 'linear-gradient(90deg, var(--text-secondary), var(--text-primary))'
               }}
             />
           </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Sun, Moon } from 'lucide-react';
 import './MobileProfile.css';
 
 export const MobileProfile = ({
@@ -13,12 +13,14 @@ export const MobileProfile = ({
   handleUpdateBudget,
   totalSpending,
   overallBudgetMatch,
+  theme,
+  toggleTheme,
 }) => {
   return (
     <div className="mobile-view-fade mobile-profile-section">
       <div className="mobile-profile-card mobile-profile-card-row">
         <div className="mobile-avatar mobile-avatar-compact">
-          <User size={20} color="white" />
+          <User size={20} color="var(--text-primary)" />
         </div>
         <div style={{ flex: 1, textAlign: 'left' }}>
           <h3 className="mobile-profile-name">{user?.name}</h3>
@@ -86,6 +88,18 @@ export const MobileProfile = ({
               </button>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Preferences Settings Card */}
+      <div className="glass-card glass-card-padded-compact">
+        <h4 className="mobile-section-title">Preferences</h4>
+        <div className="mobile-flex-align-center" style={{ justifyContent: 'space-between', width: '100%' }}>
+          <span className="mobile-flex-span" style={{ fontSize: '15px' }}>App Theme</span>
+          <button onClick={toggleTheme} className="btn btn-secondary theme-toggle-btn">
+            {theme === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
+            <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
+          </button>
         </div>
       </div>
     </div>

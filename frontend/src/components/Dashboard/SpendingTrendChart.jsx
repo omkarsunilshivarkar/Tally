@@ -12,15 +12,15 @@ export const SpendingTrendChart = ({ currentMonthExpenses }) => {
           <svg width="100%" height="220" viewBox="0 0 500 200" className="trend-chart-svg">
             <defs>
               <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="white" stopOpacity="0.15" />
-                <stop offset="100%" stopColor="white" stopOpacity="0" />
+                <stop offset="0%" stopColor="var(--text-primary)" stopOpacity="0.15" />
+                <stop offset="100%" stopColor="var(--text-primary)" stopOpacity="0" />
               </linearGradient>
             </defs>
             {/* Grid Lines */}
-            <line x1="40" y1="20" x2="480" y2="20" stroke="rgba(255,255,255,0.05)" strokeDasharray="3" />
-            <line x1="40" y1="75" x2="480" y2="75" stroke="rgba(255,255,255,0.05)" strokeDasharray="3" />
-            <line x1="40" y1="130" x2="480" y2="130" stroke="rgba(255,255,255,0.05)" strokeDasharray="3" />
-            <line x1="40" y1="170" x2="480" y2="170" stroke="rgba(255,255,255,0.1)" />
+            <line x1="40" y1="20" x2="480" y2="20" stroke="var(--border-color)" strokeDasharray="3" />
+            <line x1="40" y1="75" x2="480" y2="75" stroke="var(--border-color)" strokeDasharray="3" />
+            <line x1="40" y1="130" x2="480" y2="130" stroke="var(--border-color)" strokeDasharray="3" />
+            <line x1="40" y1="170" x2="480" y2="170" stroke="var(--border-color)" />
 
             {/* Draw points & connecting line */}
             {(() => {
@@ -50,11 +50,11 @@ export const SpendingTrendChart = ({ currentMonthExpenses }) => {
               return (
                 <>
                   <path d={dGrad} fill="url(#chartGradient)" />
-                  <path d={d} fill="none" stroke="white" strokeWidth="2.5" />
+                  <path d={d} fill="none" stroke="var(--text-primary)" strokeWidth="2.5" />
                   {points.map((p, idx) => (
                     <g key={idx}>
-                      <circle cx={p.x} cy={p.y} r="5" fill="white" stroke="var(--bg-color)" strokeWidth="1.5" />
-                      <text x={p.x} y={p.y - 10} textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">
+                      <circle cx={p.x} cy={p.y} r="5" fill="var(--text-primary)" stroke="var(--bg-color)" strokeWidth="1.5" />
+                      <text x={p.x} y={p.y - 10} textAnchor="middle" fill="var(--text-primary)" fontSize="9" fontWeight="bold">
                         ₹{daySums[sortedDays[idx]].toFixed(0)}
                       </text>
                       <text x={p.x} y="188" textAnchor="middle" fill="var(--text-muted)" fontSize="8">

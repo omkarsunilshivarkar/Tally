@@ -99,7 +99,7 @@
   .mobile-layout {
     display: block;
     min-height: 100vh;
-    background: #050505;
+    background: var(--bg-color);
     color: var(--text-primary);
     overflow-x: hidden;
   }

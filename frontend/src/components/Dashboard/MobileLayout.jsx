@@ -48,6 +48,8 @@ export const MobileLayout = ({ state }) => {
     manualForm,
     setManualForm,
     handleManualSubmit,
+    theme,
+    toggleTheme,
   } = state;
 
   return (
@@ -132,6 +134,8 @@ export const MobileLayout = ({ state }) => {
             handleUpdateBudget={handleUpdateBudget}
             totalSpending={totalSpending}
             overallBudgetMatch={overallBudgetMatch}
+            theme={theme}
+            toggleTheme={toggleTheme}
           />
         )}
       </div>

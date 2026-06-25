@@ -35,9 +35,9 @@ export const MobileAnalytics = ({
             <p className="mobile-chart-empty-text">No transactions to plot</p>
           ) : (
             <svg width="100%" height="160" viewBox="0 0 500 200" className="trend-chart-svg">
-              <line x1="40" y1="20" x2="480" y2="20" stroke="rgba(255,255,255,0.05)" strokeDasharray="3" />
-              <line x1="40" y1="130" x2="480" y2="130" stroke="rgba(255,255,255,0.05)" strokeDasharray="3" />
-              <line x1="40" y1="170" x2="480" y2="170" stroke="rgba(255,255,255,0.1)" />
+              <line x1="40" y1="20" x2="480" y2="20" stroke="var(--border-color)" strokeDasharray="3" />
+              <line x1="40" y1="130" x2="480" y2="130" stroke="var(--border-color)" strokeDasharray="3" />
+              <line x1="40" y1="170" x2="480" y2="170" stroke="var(--border-color)" />
               {(() => {
                 const daySums = {};
                 currentMonthExpenses.forEach((exp) => {
@@ -61,11 +61,11 @@ export const MobileAnalytics = ({
                 }
                 return (
                   <>
-                    <path d={d} fill="none" stroke="white" strokeWidth="2" />
+                    <path d={d} fill="none" stroke="var(--text-primary)" strokeWidth="2" />
                     {points.map((p, idx) => (
                       <g key={idx}>
-                        <circle cx={p.x} cy={p.y} r="4" fill="white" />
-                        <text x={p.x} y={p.y - 8} textAnchor="middle" fill="white" fontSize="9">
+                        <circle cx={p.x} cy={p.y} r="4" fill="var(--text-primary)" />
+                        <text x={p.x} y={p.y - 8} textAnchor="middle" fill="var(--text-primary)" fontSize="9">
                           ₹{daySums[sortedDays[idx]].toFixed(0)}
                         </text>
                       </g>
@@ -120,8 +120,8 @@ export const MobileAnalytics = ({
                     );
                   });
                 })()}
-                <circle cx="50" cy="50" r="28" fill="var(--bg-color)" />
-                <text x="50" y="53" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">₹{totalSpending.toFixed(0)}</text>
+                <circle cx="50" cy="50" r="28" fill="none" />
+                <text x="50" y="53" textAnchor="middle" fill="var(--text-primary)" fontSize="9" fontWeight="bold">₹{totalSpending.toFixed(0)}</text>
               </svg>
               <div className="mobile-legend-container">
                 {donutData.map((slice, index) => (
@@ -162,7 +162,7 @@ export const MobileAnalytics = ({
                       className="progress-bar-fill"
                       style={{
                         width: `${progressPercent}%`,
-                        background: isOver ? '#ff4d4d' : progressPercent > 80 ? 'var(--warning-color)' : 'white',
+                        background: isOver ? '#ff4d4d' : progressPercent > 80 ? 'var(--warning-color)' : 'var(--text-primary)',
                       }}
                     />
                   </div>

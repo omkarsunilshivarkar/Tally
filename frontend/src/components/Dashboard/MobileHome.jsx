@@ -22,13 +22,20 @@ export const MobileHome = ({
         <div className="mobile-card-left">
           <div className="mobile-goals-ring-wrapper">
             <svg width="64" height="64" viewBox="0 0 50 50">
-              <circle cx="25" cy="25" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4" />
               <circle
                 cx="25"
                 cy="25"
                 r={radius}
                 fill="none"
-                stroke="white"
+                stroke="var(--border-color)"
+                strokeWidth="4"
+              />
+              <circle
+                cx="25"
+                cy="25"
+                r={radius}
+                fill="none"
+                stroke="var(--text-primary)"
                 strokeWidth="4"
                 strokeDasharray={circumference}
                 strokeDashoffset={strokeDashoffset}
@@ -99,7 +106,7 @@ export const MobileHome = ({
                     onClick={() => handleDeleteExpense(exp.id)}
                     title="Delete"
                   >
-                    <Trash2 size={12} />
+                    <Trash2 size={16} />
                   </button>
                 </div>
               </div>

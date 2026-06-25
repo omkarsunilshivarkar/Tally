@@ -69,6 +69,17 @@ export const useDashboardState = () => {
   const { token, user, logout } = useAuth();
   const [expenses, setExpenses] = useState([]);
   const [budgets, setBudgets] = useState([]);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  };
 
   // Forms & Modals
   const [manualForm, setManualForm] = useState({
@@ -287,14 +298,14 @@ export const useDashboardState = () => {
     .map(([cat, amt]) => ({ name: cat, value: amt }));
 
   const chartColors = [
-    '#ffffff', // Pure White
-    '#e0e0e0', // Light Gray
-    '#c0c0c0', // Silver
-    '#a0a0a0', // Medium Gray
-    '#808080', // Gray
-    '#606060', // Darker Gray
-    '#404040', // Deep Gray
-    '#222222', // Charcoal Gray
+    'var(--chart-1)',
+    'var(--chart-2)',
+    'var(--chart-3)',
+    'var(--chart-4)',
+    'var(--chart-5)',
+    'var(--chart-6)',
+    'var(--chart-7)',
+    'var(--chart-8)',
   ];
 
   // Timeframe filter logic
@@ -415,5 +426,7 @@ export const useDashboardState = () => {
     radius,
     circumference,
     strokeDashoffset,
+    theme,
+    toggleTheme,
   };
 };

@@ -26,55 +26,59 @@ export const MobileHistory = ({
   return (
     <div className="mobile-view-fade">
       {/* Filter controls inside a glass card */}
-      <div className="glass-card glass-card-padded">
-        <div className="mobile-grid-2col">
+      <div className="glass-card glass-card-padded-compact" style={{ marginBottom: '1.25rem' }}>
+        <div className="mobile-inputs-stack">
           <div className="form-group form-group-no-margin">
-            <label className="form-label mobile-input-label">Budget Month</label>
+            <label className="form-label mobile-input-label">Filter Month</label>
             <input
               type="month"
-              className="form-input mobile-input-compact"
+              className="form-input mobile-input-compact w-100"
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
             />
           </div>
+
           <div className="form-group form-group-no-margin">
-            <label className="form-label mobile-input-label">Search Transactions</label>
-            <div className="pos-relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="form-input mobile-input-compact w-100"
-                value={historySearch}
-                onChange={(e) => setHistorySearch(e.target.value)}
-              />
-              {historySearch && (
-                <button
-                  onClick={() => setHistorySearch('')}
-                  className="mobile-input-clear-btn"
-                >
-                  <X size={14} />
-                </button>
-              )}
+            <label className="form-label mobile-input-label">Filter by Category</label>
+            <div className="mobile-category-chips-scroll">
+              {['All', ...CATEGORIES].map((cat) => {
+                const isSelected = historyCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setHistoryCategory(cat)}
+                    className={`mobile-chip ${isSelected ? 'active' : ''}`}
+                  >
+                    {cat.split(' ')[0]}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="form-group form-group-no-margin">
-          <label className="form-label mobile-input-label">Filter by Category</label>
-          <div className="mobile-category-chips-scroll">
-            {['All', ...CATEGORIES].map((cat) => {
-              const isSelected = historyCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setHistoryCategory(cat)}
-                  className={`mobile-chip ${isSelected ? 'active' : ''}`}
-                >
-                  {cat.split(' ')[0]}
-                </button>
-              );
-            })}
-          </div>
+      {/* Standalone Search Bar */}
+      <div className="mobile-standalone-search-wrapper">
+        <div className="pos-relative">
+          <span className="mobile-input-search-icon">
+            <Search size={16} />
+          </span>
+          <input
+            type="text"
+            placeholder="Search description, category..."
+            className="form-input mobile-standalone-search-input w-100"
+            value={historySearch}
+            onChange={(e) => setHistorySearch(e.target.value)}
+          />
+          {historySearch && (
+            <button
+              onClick={() => setHistorySearch('')}
+              className="mobile-input-clear-btn"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -111,7 +115,7 @@ export const MobileHistory = ({
                   onClick={() => handleDeleteExpense(exp.id)}
                   title="Delete"
                 >
-                  <Trash2 size={12} />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>

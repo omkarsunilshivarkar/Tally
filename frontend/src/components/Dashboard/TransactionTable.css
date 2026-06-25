@@ -51,7 +51,7 @@ tr:hover td {
 
 .tx-table-amount {
   font-weight: bold;
-  color: white;
+  color: var(--text-primary);
 }
 
 .tx-table-delete-btn {

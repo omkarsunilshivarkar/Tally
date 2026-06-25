@@ -36,7 +36,7 @@ export const BudgetSettings = ({
                   className="progress-bar-fill"
                   style={{
                     width: `${progressPercent}%`,
-                    background: isOver ? '#ff4d4d' : progressPercent > 80 ? 'var(--warning-color)' : 'white',
+                    background: isOver ? '#ff4d4d' : progressPercent > 80 ? 'var(--warning-color)' : 'var(--text-primary)',
                   }}
                 />
               </div>
@@ -84,7 +84,7 @@ export const BudgetSettings = ({
                     className="progress-bar-fill"
                     style={{
                       width: `${progressPercent}%`,
-                      background: isOver ? '#ff4d4d' : progressPercent > 80 ? 'var(--warning-color)' : 'white',
+                      background: isOver ? '#ff4d4d' : progressPercent > 80 ? 'var(--warning-color)' : 'var(--text-primary)',
                     }}
                   />
                 </div>

@@ -34,6 +34,72 @@
   
   --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
   --shadow-neon: 0 0 20px rgba(255, 255, 255, 0.05);
+
+  /* Background details & other helpers */
+  --bg-glow-1: rgba(255, 255, 255, 0.03);
+  --bg-glow-2: rgba(255, 255, 255, 0.01);
+  --select-option-bg: #121212;
+  --primary-btn-shadow: rgba(255, 255, 255, 0.08);
+  --btn-secondary-bg: rgba(255, 255, 255, 0.05);
+  --btn-secondary-hover: rgba(255, 255, 255, 0.1);
+  --curved-container-bg: #080808;
+  --nav-bg: #141414;
+  --nav-border: rgba(255, 255, 255, 0.12);
+
+  /* Premium Chart Colors */
+  --chart-1: #ffffff;
+  --chart-2: #818cf8;
+  --chart-3: #34d399;
+  --chart-4: #fb7185;
+  --chart-5: #fbbf24;
+  --chart-6: #a78bfa;
+  --chart-7: #38bdf8;
+  --chart-8: #a3a3a3;
+}
+
+:root[data-theme="light"] {
+  --bg-color: #f6f6f7;
+  --surface-color: rgba(255, 255, 255, 0.8);
+  --surface-hover: rgba(240, 240, 240, 0.95);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-glow: rgba(0, 0, 0, 0.16);
+  
+  --primary-color: hsl(0, 0%, 0%); /* Pure Black */
+  --primary-glow: rgba(0, 0, 0, 0.1);
+  --secondary-color: hsl(0, 0%, 25%); /* Dark Gray */
+  --secondary-glow: rgba(0, 0, 0, 0.05);
+  
+  --success-color: hsl(0, 0%, 0%); /* Black */
+  --warning-color: hsl(0, 0%, 35%); /* Charcoal */
+  --danger-color: hsl(0, 0%, 65%); /* Silver */
+  
+  --text-primary: hsl(0, 0%, 0%);
+  --text-secondary: hsl(0, 0%, 25%);
+  --text-muted: hsl(0, 0%, 45%);
+  
+  --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+  --shadow-neon: 0 0 20px rgba(0, 0, 0, 0.02);
+  
+  --bg-glow-1: rgba(0, 0, 0, 0.02);
+  --bg-glow-2: rgba(0, 0, 0, 0.01);
+  --select-option-bg: #ffffff;
+  
+  --primary-btn-shadow: rgba(0, 0, 0, 0.08);
+  --btn-secondary-bg: rgba(0, 0, 0, 0.05);
+  --btn-secondary-hover: rgba(0, 0, 0, 0.08);
+  --curved-container-bg: #ffffff;
+  --nav-bg: #ffffff;
+  --nav-border: rgba(0, 0, 0, 0.08);
+
+  /* Premium Chart Colors for Light Mode */
+  --chart-1: #000000;
+  --chart-2: #4f46e5;
+  --chart-3: #059669;
+  --chart-4: #e11d48;
+  --chart-5: #d97706;
+  --chart-6: #7c3aed;
+  --chart-7: #0284c7;
+  --chart-8: #525252;
 }
 
 /* Base Styles */
@@ -43,6 +109,15 @@
   padding: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--border-glow) var(--bg-color);
+}
+
+/* Fix SVG chart text orientation */
+.trend-chart-svg text,
+svg text {
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  transform: none !important;
+  font-family: var(--font-sans) !important;
 }
 
 body {
@@ -56,8 +131,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.01) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, var(--bg-glow-1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, var(--bg-glow-2) 0%, transparent 40%);
   background-attachment: fixed;
 }
 
@@ -198,7 +273,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-select option {
-  background-color: #121212;
+  background-color: var(--select-option-bg);
   color: var(--text-primary);
 }
 
@@ -220,13 +295,13 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary {
   background: var(--text-primary);
   color: var(--bg-color);
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px var(--primary-btn-shadow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   background: var(--secondary-color);
-  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px var(--primary-btn-shadow);
 }
 
 .btn-primary:active {
@@ -234,13 +309,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--btn-secondary-bg);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--btn-secondary-hover);
   border-color: var(--border-glow);
 }
 

@@ -26,7 +26,7 @@ export const MobileNavigation = ({ activeMobileView, setActiveMobileView }) => {
         className={`mobile-nav-item mobile-nav-scan ${activeMobileView === 'add-expense' ? 'active' : ''}`}
         title="Add Expense"
       >
-        <Plus size={22} color="black" />
+        <Plus size={22} color="currentColor" />
       </button>
 
       <button

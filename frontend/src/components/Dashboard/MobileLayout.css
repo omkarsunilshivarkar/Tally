@@ -2,16 +2,16 @@
   .mobile-layout {
     display: block;
     min-height: 100vh;
-    background: #050505;
+    background: var(--bg-color);
     color: var(--text-primary);
     overflow-x: hidden;
   }
 
   .mobile-curved-container {
-    background: #080808;
+    background: var(--curved-container-bg);
     border-top-left-radius: 28px;
     border-top-right-radius: 28px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid var(--border-color);
     margin-top: -2.5rem;
     padding: 2rem 1.25rem 7.5rem 1.25rem;
     min-height: calc(100vh - 220px);

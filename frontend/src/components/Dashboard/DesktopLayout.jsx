@@ -40,6 +40,8 @@ export const DesktopLayout = ({ state }) => {
     setEditingBudget,
     handleUpdateBudget,
     overallBudgetMatch,
+    theme,
+    toggleTheme,
   } = state;
 
   return (
@@ -50,6 +52,8 @@ export const DesktopLayout = ({ state }) => {
         logout={logout}
         setIsScannerOpen={setIsScannerOpen}
         setIsChatOpen={setIsChatOpen}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       {/* Main Content Dashboard */}

@@ -21,8 +21,8 @@
 }
 
 .metric-card-icon {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  background: var(--btn-secondary-bg);
+  color: var(--text-primary);
 }
 
 .metric-card-label {

@@ -88,7 +88,7 @@
   }
 
   .mobile-budget-item-card {
-    background: rgba(255, 255, 255, 0.01);
+    background: var(--btn-secondary-bg);
     padding: 1rem 0.75rem;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-color);
@@ -108,7 +108,8 @@
   }
 
   .mobile-progress-bar-container-compact {
-    height: 4px;
+    height: 6px;
+    margin-top: 10px !important;
     margin: 0;
   }
 }

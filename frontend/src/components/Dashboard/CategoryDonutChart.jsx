@@ -48,9 +48,9 @@ export const CategoryDonutChart = ({ donutData, totalSpending, chartColors }) =>
                   );
                 });
               })()}
-              <circle cx="50" cy="50" r="28" fill="var(--bg-color)" />
+              <circle cx="50" cy="50" r="28" fill="none" />
               <text x="50" y="48" textAnchor="middle" fill="var(--text-muted)" fontSize="6" fontWeight="bold">TOTAL</text>
-              <text x="50" y="58" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold">₹{totalSpending.toFixed(0)}</text>
+              <text x="50" y="58" textAnchor="middle" fill="var(--text-primary)" fontSize="9" fontWeight="bold">₹{totalSpending.toFixed(0)}</text>
             </svg>
 
             <div className="chart-donut-legend">

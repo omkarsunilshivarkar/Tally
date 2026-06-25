@@ -1,8 +1,8 @@
 import React from 'react';
-import { Sparkles, IndianRupee, FileText, Brain, User, LogOut } from 'lucide-react';
+import { Sparkles, IndianRupee, FileText, Brain, User, LogOut, Sun, Moon } from 'lucide-react';
 import './DesktopSidebar.css';
 
-export const DesktopSidebar = ({ user, logout, setIsScannerOpen, setIsChatOpen }) => {
+export const DesktopSidebar = ({ user, logout, setIsScannerOpen, setIsChatOpen, theme, toggleTheme }) => {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo-container">
@@ -28,6 +28,10 @@ export const DesktopSidebar = ({ user, logout, setIsScannerOpen, setIsChatOpen }
       </div>
 
       <div className="sidebar-footer">
+        <button onClick={toggleTheme} className="btn btn-secondary sidebar-theme-btn">
+          {theme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
+          <span>{theme === 'dark' ? 'Dark Theme' : 'Light Theme'}</span>
+        </button>
         <div className="sidebar-profile">
           <div className="sidebar-avatar">
             <User size={16} color="var(--text-secondary)" />
