@@ -7,7 +7,9 @@ export default defineConfig({
   schema: './src/db/schema.js',
   out: './drizzle',
   dialect: 'sqlite',
+  driver: 'turso',
   dbCredentials: {
     url: process.env.DATABASE_URL || 'local.db',
+    authToken: process.env.DATABASE_AUTH_TOKEN,
   },
 });
