@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .form-group-no-margin {
@@ -66,7 +66,7 @@
   .mobile-chip {
     padding: 0.35rem 0.7rem;
     border-radius: 99px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     white-space: nowrap;
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -94,12 +94,13 @@
   }
 
   .mobile-summary-banner-count {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
   }
 
   .mobile-summary-banner-total {
-    font-size: 13px;
+    font-size: 16px;
+    letter-spacing: 1px;
     font-weight: bold;
     color: white;
   }
