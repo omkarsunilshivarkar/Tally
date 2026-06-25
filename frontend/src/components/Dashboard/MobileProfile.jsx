@@ -20,10 +20,13 @@ export const MobileProfile = ({
         <div className="mobile-avatar mobile-avatar-compact">
           <User size={20} color="white" />
         </div>
-        <div>
+        <div style={{ flex: 1, textAlign: 'left' }}>
           <h3 className="mobile-profile-name">{user?.name}</h3>
           <p className="mobile-profile-email">{user?.email}</p>
         </div>
+        <button onClick={logout} className="mobile-card-logout-btn" title="Log Out">
+          <LogOut size={18} />
+        </button>
       </div>
 
       {/* Set budget limits inline for mobile */}
@@ -85,10 +88,6 @@ export const MobileProfile = ({
           ))}
         </div>
       </div>
-
-      <button onClick={logout} className="btn btn-primary mobile-logout-btn">
-        <LogOut size={16} /> Log Out
-      </button>
     </div>
   );
 };

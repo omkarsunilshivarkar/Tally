@@ -8,10 +8,8 @@
     width: calc(100% - 2.5rem);
     max-width: 480px;
     height: 56px;
-    background: rgba(12, 12, 12, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 28px;
     display: flex;
     align-items: center;
