@@ -11,7 +11,7 @@
 .mobile-quick-log-section .ai-log-input {
   width: 100%;
   padding: 0.8rem 3.4rem 0.8rem 2.6rem;
-  font-size: 15px;
+  font-size: 16px !important;
   background: var(--surface-color);
   border: 1px solid var(--border-glow);
   border-radius: 9999px;
@@ -44,9 +44,9 @@
   pointer-events: none;
 }
 
-.mobile-quick-log-section .ai-log-input:focus ~ .ai-log-sparkle,
-.mobile-quick-log-section .ai-log-input:focus ~ .ai-log-loading-wrapper .ai-log-sparkle,
-.mobile-quick-log-section .ai-log-input:focus ~ .ai-log-submit-btn {
+.mobile-quick-log-section .ai-log-input:focus~.ai-log-sparkle,
+.mobile-quick-log-section .ai-log-input:focus~.ai-log-loading-wrapper .ai-log-sparkle,
+.mobile-quick-log-section .ai-log-input:focus~.ai-log-submit-btn {
   color: var(--text-primary);
 }
 
@@ -93,4 +93,3 @@
 .mobile-quick-log-section .ai-log-submit-btn:active {
   transform: translateY(-50%) scale(0.9);
 }
-

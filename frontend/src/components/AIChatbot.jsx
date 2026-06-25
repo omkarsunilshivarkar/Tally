@@ -14,7 +14,6 @@ const TallyLogo = ({ size = 20, className = '' }) => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className={`${className} tally-logo-svg`}
-    style={{ transform: 'none' }}
   >
     {/* Trend Line */}
     <path d="M22 55 L42 35 L58 45 L78 20" />
@@ -137,14 +136,14 @@ I have full access to your transactions and budget limits. Ask me anything, for 
 
       if (isBullet) {
         return (
-          <li key={idx} style={{ marginLeft: '1rem', marginBottom: '0.25rem' }}>
+          <li key={idx} className="chat-md-li">
             {finalLine}
           </li>
         );
       }
 
       return (
-        <p key={idx} style={{ marginBottom: line.trim() === '' ? '0.75rem' : '0.25rem', minHeight: '1px' }}>
+        <p key={idx} className={line.trim() === '' ? 'chat-md-p empty' : 'chat-md-p'}>
           {finalLine}
         </p>
       );
@@ -152,46 +151,25 @@ I have full access to your transactions and budget limits. Ask me anything, for 
   };
 
   return (
-    <div
-      className={`chat-drawer ${isOpen ? 'open' : ''}`}
-      style={{
-        display: 'flex',
-      }}
-    >
+    <div className={`chat-drawer ${isOpen ? 'open' : ''}`}>
       {/* Mobile Drag Handle */}
       <div className="mobile-drag-handle" />
 
       {/* Header */}
       <div className="chat-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div className="chat-header-info">
           <div className="chat-header-logo-box">
-            <TallyLogo size={20} />
+            <TallyLogo size={32} />
           </div>
           <div>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: 600 }}>Tally Advisor</h4>
-            <span style={{ fontSize: '0.75rem', color: 'var(--secondary-color)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span style={{ 
-                display: 'inline-block', 
-                width: '6px', 
-                height: '6px', 
-                borderRadius: '50%', 
-                backgroundColor: '#10b981', 
-                boxShadow: '0 0 6px #10b981' 
-              }} /> Online and ready to help
+            <h4 className="chat-header-title">Tally Advisor</h4>
+            <span className="chat-header-subtitle">
+              <span className="chat-status-dot" /> Online and ready to help
             </span>
           </div>
         </div>
-        <button
-          onClick={onClose}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--text-secondary)',
-            cursor: 'pointer',
-            padding: '0.25rem',
-          }}
-        >
-          <X size={20} />
+        <button onClick={onClose} className="chat-close-btn">
+          <X size={24} />
         </button>
       </div>
 
@@ -203,8 +181,8 @@ I have full access to your transactions and budget limits. Ask me anything, for 
           </div>
         ))}
         {loading && (
-          <div className="chat-bubble assistant" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Loader2 size={16} className="ai-log-sparkle" style={{ animation: 'spin 1.5s linear infinite' }} />
+          <div className="chat-bubble assistant chat-bubble-loading">
+            <Loader2 size={16} className="ai-log-sparkle chat-loading-spinner" />
             <span>Analyzing your transactions...</span>
           </div>
         )}
@@ -213,29 +191,12 @@ I have full access to your transactions and budget limits. Ask me anything, for 
 
       {/* Suggestion Chips */}
       {messages.length === 1 && !loading && (
-        <div style={{ padding: '0.75rem 1.25rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+        <div className="chat-suggestions">
           {SUGGESTION_CHIPS.map((chip, idx) => (
             <button
               key={idx}
               onClick={() => handleSendMessage(chip)}
-              style={{
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '9999px',
-                padding: '0.4rem 0.8rem',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-                color: 'var(--text-secondary)',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--primary-color)';
-                e.currentTarget.style.color = 'white';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border-color)';
-                e.currentTarget.style.color = 'var(--text-secondary)';
-              }}
+              className="chat-chip-btn"
             >
               {chip}
             </button>
@@ -247,21 +208,19 @@ I have full access to your transactions and budget limits. Ask me anything, for 
       <div className="chat-input-area">
         <input
           type="text"
-          className="form-input"
+          className="form-input chat-input-field"
           placeholder="Ask about your budget or habits..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(input)}
           disabled={loading}
-          style={{ flex: 1, borderRadius: 'var(--radius-md)' }}
         />
         <button
           onClick={() => handleSendMessage(input)}
-          className="btn btn-primary"
+          className="btn btn-primary chat-send-btn"
           disabled={loading || !input.trim()}
-          style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', minWidth: '46px' }}
         >
-          <Send size={16} />
+          <Send size={20} />
         </button>
       </div>
     </div>
