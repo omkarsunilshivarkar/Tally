@@ -14,7 +14,7 @@
   }
 
   .mobile-input-label {
-    font-size: 16px !important;
+    font-size: 18px !important;
     font-weight: 500;
     margin-bottom: 4px;
     display: block;
@@ -22,7 +22,7 @@
   }
 
   .mobile-input-compact {
-    font-size: 14px !important;
+    font-size: 16px !important;
     padding: 0.5rem 0.75rem !important;
     background: var(--surface-color) !important;
   }
@@ -32,7 +32,7 @@
   }
 
   .mobile-section-title {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 1rem;
   }
 
@@ -97,12 +97,12 @@
   .mobile-budget-item-header {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
   }
 
   .mobile-budget-item-amount {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 500;
     letter-spacing: 1px;
   }
