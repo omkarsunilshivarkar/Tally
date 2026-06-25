@@ -37,7 +37,7 @@
 
   .mobile-card-tag {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text-muted);
     text-align: center;
@@ -69,10 +69,10 @@
 
   .mobile-subcard-label {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text-muted);
-    margin: 0 0 4px 0;
+    margin: 0 0 6px 0;
   }
 
   .mobile-subcard-val {
@@ -81,6 +81,7 @@
     font-weight: 600;
     color: white;
     margin: 0;
+    letter-spacing: 1px;
   }
 
   .mobile-subcard-hr {
@@ -91,7 +92,7 @@
 
   .mobile-timeframe-summary {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text-secondary);
     text-align: center;
@@ -150,7 +151,7 @@
 
   .mobile-tx-merchant {
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     color: white;
     margin: 0 0 2px 0;
@@ -161,7 +162,7 @@
 
   .mobile-tx-date {
     font-family: var(--font-subtext);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text-muted);
     margin: 0;
@@ -175,8 +176,9 @@
 
   .mobile-tx-amt {
     font-family: var(--font-display);
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
+    letter-spacing: 1px;
     color: white;
   }
 
@@ -208,12 +210,12 @@
   }
 
   .mobile-recent-tx-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
   }
 
   .mobile-recent-tx-count {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text-muted);
   }
@@ -221,5 +223,6 @@
   .mobile-bold-text-white {
     color: white;
     font-weight: bold;
+    letter-spacing: 1px;
   }
 }
