@@ -22,7 +22,7 @@ export const MobileHeader = ({
           </div>
           
           <button className="mobile-chat-btn" onClick={() => setIsChatOpen(true)} title="AI Advisor">
-            <Bot size={24} />
+            <Bot size={22} />
           </button>
         </header>
 

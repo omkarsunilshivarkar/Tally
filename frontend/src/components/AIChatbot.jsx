@@ -159,7 +159,7 @@ I have full access to your transactions and budget limits. Ask me anything, for 
       <div className="chat-header">
         <div className="chat-header-info">
           <div className="chat-header-logo-box">
-            <TallyLogo size={32} />
+            <TallyLogo size={28} />
           </div>
           <div>
             <h4 className="chat-header-title">Tally Advisor</h4>
@@ -220,7 +220,7 @@ I have full access to your transactions and budget limits. Ask me anything, for 
           className="btn btn-primary chat-send-btn"
           disabled={loading || !input.trim()}
         >
-          <Send size={20} />
+          <Send size={18} />
         </button>
       </div>
     </div>
