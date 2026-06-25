@@ -42,7 +42,7 @@ export const MobileProfile = ({
         <div className="mobile-overall-budget-card">
           <div className="mobile-overall-budget-header">
             <span>Overall Budget</span>
-            <span>
+            <span className="mobile-overall-budget-amount">
               ₹{totalSpending.toFixed(0)} / ₹{overallBudgetMatch ? overallBudgetMatch.limitAmount.toFixed(0) : '—'}
             </span>
           </div>
