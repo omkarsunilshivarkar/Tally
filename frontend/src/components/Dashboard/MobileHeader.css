@@ -1,0 +1,178 @@
+@media (max-width: 767px) {
+  /* Mobile Top Bar Styles */
+  .mobile-top-bar {
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.08) 0%, transparent 65%);
+    padding: 2.25rem 1.25rem 4rem 1.25rem;
+  }
+
+  .mobile-header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.75rem;
+  }
+
+  .mobile-greeting-subtitle {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .mobile-greeting-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.1;
+  }
+
+  .mobile-metrics-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .mobile-metric-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-metric-col:last-child {
+    align-items: flex-end;
+  }
+
+  .mobile-metric-label {
+    font-family: var(--font-subtext);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-metric-col:last-child .mobile-metric-label {
+    justify-content: flex-end;
+  }
+
+  .mobile-metric-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: white;
+    line-height: 1;
+  }
+
+  .mobile-metric-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Mobile progress pill bar */
+  .mobile-progress-wrapper {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 0.85rem 1rem;
+  }
+
+  .mobile-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .mobile-progress-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .mobile-progress-values {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+
+  .mobile-progress-slash {
+    color: rgba(255, 255, 255, 0.25);
+    margin: 0 2px;
+  }
+
+  .mobile-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .mobile-progress-filled {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease-out;
+  }
+
+  .mobile-progress-status-msg {
+    font-family: var(--font-subtext);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Page Header when active view has no dashboard stats */
+  .mobile-view-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.25rem 3.5rem 1.25rem;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06) 0%, transparent 80%);
+  }
+
+  .mobile-page-back-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .mobile-page-back-btn:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-page-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: white;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .mobile-header-icon {
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .mobile-header-icon-small {
+    margin-right: 2px;
+    vertical-align: middle;
+  }
+}

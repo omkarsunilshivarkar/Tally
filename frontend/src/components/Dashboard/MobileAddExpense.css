@@ -1,0 +1,46 @@
+@media (max-width: 767px) {
+  .glass-card-padded {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .form-group-no-margin {
+    margin: 0;
+  }
+
+  .mobile-input-label {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    display: block;
+    color: var(--text-secondary);
+  }
+
+  .mobile-input-compact {
+    font-size: 12px !important;
+    padding: 0.5rem 0.75rem !important;
+    background: var(--surface-color) !important;
+  }
+
+  .w-100 {
+    width: 100% !important;
+  }
+
+  .mobile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .mobile-form-submit-btn {
+    padding: 0.6rem !important;
+    font-size: 12px !important;
+    margin-top: 0.5rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .mobile-header-icon {
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+}

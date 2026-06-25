@@ -1,9 +1,10 @@
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthPages } from './components/AuthPages';
+import { Dashboard } from './components/Dashboard';
 import { Loader2 } from 'lucide-react';
 
 const AppContent = () => {
-  const { loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -31,7 +32,11 @@ const AppContent = () => {
     );
   }
 
-  return <AuthPages />;
+  if (!user) {
+    return <AuthPages />;
+  }
+
+  return <Dashboard />;
 };
 
 function App() {

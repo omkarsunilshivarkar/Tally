@@ -1,0 +1,25 @@
+.manual-transaction-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+
+.manual-transaction-form .form-group {
+  margin: 0;
+}
+.manual-transaction-form .form-group-span-2 {
+  grid-column: span 2;
+  margin: 0;
+}
+.manual-transaction-form .form-input,
+.manual-transaction-form .form-select {
+  padding: 0.5rem;
+}
+.manual-transaction-form .btn-submit {
+  padding: 0.5rem;
+}

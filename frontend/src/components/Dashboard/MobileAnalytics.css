@@ -1,0 +1,106 @@
+@media (max-width: 767px) {
+  .glass-card-padded {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .glass-card-padded-compact {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+  }
+
+  .form-group-no-margin {
+    margin: 0;
+  }
+
+  .mobile-input-label {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    display: block;
+    color: var(--text-secondary);
+  }
+
+  .mobile-input-compact {
+    font-size: 12px !important;
+    padding: 0.5rem 0.75rem !important;
+    background: var(--surface-color) !important;
+  }
+
+  .w-100 {
+    width: 100% !important;
+  }
+
+  .mobile-section-title {
+    font-size: 14px;
+    margin-bottom: 1rem;
+  }
+
+  .mobile-chart-container {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-chart-empty-text {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .mobile-flex-center-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-legend-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-height: 120px;
+    overflow-y: auto;
+    font-size: 11px;
+  }
+
+  .mobile-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .mobile-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .mobile-legend-label {
+    color: var(--text-secondary);
+  }
+
+  .mobile-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mobile-budget-item-card {
+    background: rgba(255,255,255,0.01);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+  }
+
+  .mobile-budget-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    margin-bottom: 0.25rem;
+  }
+
+  .mobile-progress-bar-container-compact {
+    height: 4px;
+    margin: 0;
+  }
+}

@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import authRouter from './routes/auth.js';
+import expensesRouter from './routes/expenses.js';
+import budgetsRouter from './routes/budgets.js';
+import chatbotRouter from './routes/chatbot.js';
 
 dotenv.config();
 
@@ -16,6 +20,12 @@ app.use(
 );
 
 app.use(express.json());
+
+// API Routes
+app.use('/api/auth', authRouter);
+app.use('/api/expenses', expensesRouter);
+app.use('/api/budgets', budgetsRouter);
+app.use('/api/chatbot', chatbotRouter);
 
 // Basic status health check
 app.get('/health', (req, res) => {

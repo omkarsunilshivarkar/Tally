@@ -1,0 +1,20 @@
+.chart-trend-container {
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-chart-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.15rem;
+}
+
+.trend-chart-empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.trend-chart-svg {
+  overflow: visible;
+}

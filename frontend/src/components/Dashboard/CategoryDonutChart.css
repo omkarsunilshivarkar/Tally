@@ -1,0 +1,46 @@
+.chart-donut-container {
+  height: 240px;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.chart-donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.chart-donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.donut-chart-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.15rem;
+}
+
+.donut-chart-empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.donut-legend-label {
+  color: var(--text-secondary);
+}
+
+.donut-legend-value {
+  margin-left: auto;
+}
