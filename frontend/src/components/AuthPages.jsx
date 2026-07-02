@@ -4,28 +4,14 @@ import { Lock, Mail, User, ArrowLeft } from 'lucide-react';
 import './AuthPages.css';
 
 const TallyLogo = ({ size = 64, className = '' }) => (
-  <svg
+  <img
+    src="/icon-512.png"
+    alt="Tally Logo"
     width={size}
     height={size}
-    viewBox="0 0 100 100"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={`${className} tally-logo-svg`}
-  >
-    {/* Trend Line */}
-    <path d="M22 55 L42 35 L58 45 L78 20" />
-    {/* Arrow Head */}
-    <path d="M66 20 H78 V32" />
-    {/* Bar 1 */}
-    <rect x="26" y="64" width="10" height="16" rx="2" fill="none" />
-    {/* Bar 2 */}
-    <rect x="44" y="52" width="10" height="28" rx="2" fill="none" />
-    {/* Bar 3 */}
-    <rect x="62" y="38" width="10" height="42" rx="2" fill="none" />
-  </svg>
+    style={{ borderRadius: size > 40 ? '16px' : '8px', objectFit: 'cover' }}
+    className={`${className} tally-logo-png`}
+  />
 );
 
 export const AuthPages = () => {
