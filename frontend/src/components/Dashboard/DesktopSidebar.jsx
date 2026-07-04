@@ -2,7 +2,7 @@ import React from 'react';
 import { Sparkles, IndianRupee, FileText, Brain, User, LogOut, Sun, Moon } from 'lucide-react';
 import './DesktopSidebar.css';
 
-export const DesktopSidebar = ({ user, logout, setIsScannerOpen, setIsChatOpen, theme, toggleTheme }) => {
+export const DesktopSidebar = ({ user, logout, setIsChatOpen, theme, toggleTheme }) => {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo-container">
@@ -18,9 +18,6 @@ export const DesktopSidebar = ({ user, logout, setIsScannerOpen, setIsChatOpen, 
       <div className="sidebar-nav">
         <button className="btn btn-secondary sidebar-nav-btn-active">
           <IndianRupee size={18} color="white" /> Dashboard
-        </button>
-        <button className="btn btn-secondary sidebar-nav-btn" onClick={() => setIsScannerOpen(true)}>
-          <FileText size={18} /> OCR Scanner
         </button>
         <button className="btn btn-secondary sidebar-nav-btn" onClick={() => setIsChatOpen(true)}>
           <Brain size={18} /> AI Advisor

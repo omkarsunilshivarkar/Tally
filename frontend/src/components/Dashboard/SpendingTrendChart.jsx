@@ -24,22 +24,24 @@ export const SpendingTrendChart = ({ currentMonthExpenses }) => {
 
             {/* Draw points & connecting line */}
             {(() => {
-              const daySums = {};
+              const dateSums = {};
               currentMonthExpenses.forEach((exp) => {
-                const day = new Date(exp.date).getDate();
-                daySums[day] = (daySums[day] || 0) + exp.amount;
+                dateSums[exp.date] = (dateSums[exp.date] || 0) + exp.amount;
               });
-              const sortedDays = Object.keys(daySums).map(Number).sort((a, b) => a - b);
-              if (sortedDays.length === 0) return null;
+              const sortedDates = Object.keys(dateSums).sort();
+              if (sortedDates.length === 0) return null;
 
-              const maxAmt = Math.max(...Object.values(daySums), 20);
-              const getCoords = (day, amt) => {
-                const x = 40 + (day / 31) * 440;
+              const maxAmt = Math.max(...Object.values(dateSums), 20);
+              const getCoords = (idx, amt) => {
+                const totalPoints = sortedDates.length;
+                const x = totalPoints > 1
+                  ? 40 + (idx / (totalPoints - 1)) * 440
+                  : 260; // Center if only 1 point
                 const y = 170 - (amt / maxAmt) * 150;
                 return { x, y };
               };
 
-              const points = sortedDays.map((day) => getCoords(day, daySums[day]));
+              const points = sortedDates.map((date, idx) => getCoords(idx, dateSums[date]));
               let d = `M ${points[0].x} ${points[0].y}`;
               for (let i = 1; i < points.length; i++) {
                 d += ` L ${points[i].x} ${points[i].y}`;
@@ -51,17 +53,21 @@ export const SpendingTrendChart = ({ currentMonthExpenses }) => {
                 <>
                   <path d={dGrad} fill="url(#chartGradient)" />
                   <path d={d} fill="none" stroke="var(--text-primary)" strokeWidth="2.5" />
-                  {points.map((p, idx) => (
-                    <g key={idx}>
-                      <circle cx={p.x} cy={p.y} r="5" fill="var(--text-primary)" stroke="var(--bg-color)" strokeWidth="1.5" />
-                      <text x={p.x} y={p.y - 10} textAnchor="middle" fill="var(--text-primary)" fontSize="9" fontWeight="bold">
-                        ₹{daySums[sortedDays[idx]].toFixed(0)}
-                      </text>
-                      <text x={p.x} y="188" textAnchor="middle" fill="var(--text-muted)" fontSize="8">
-                        d{sortedDays[idx]}
-                      </text>
-                    </g>
-                  ))}
+                  {points.map((p, idx) => {
+                    const dateStr = sortedDates[idx];
+                    const label = dateStr.slice(8, 10) + '/' + dateStr.slice(5, 7); // DD/MM format
+                    return (
+                      <g key={idx}>
+                        <circle cx={p.x} cy={p.y} r="5" fill="var(--text-primary)" stroke="var(--bg-color)" strokeWidth="1.5" />
+                        <text x={p.x} y={p.y - 10} textAnchor="middle" fill="var(--text-primary)" fontSize="9" fontWeight="bold">
+                          ₹{dateSums[dateStr].toFixed(0)}
+                        </text>
+                        <text x={p.x} y="188" textAnchor="middle" fill="var(--text-muted)" fontSize="8">
+                          {label}
+                        </text>
+                      </g>
+                    );
+                  })}
                 </>
               );
             })()}

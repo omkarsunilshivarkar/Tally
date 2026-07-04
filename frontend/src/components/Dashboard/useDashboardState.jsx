@@ -237,8 +237,9 @@ export const useDashboardState = () => {
       if (res.ok) {
         const parsedExpense = await res.json();
         
-        if (activeMobileView === 'add-expense') {
-          // 1. Add Expense Tab: Pre-fill the manual form fields for review
+        const isMobile = window.innerWidth <= 767;
+        if (!isMobile || activeMobileView === 'add-expense') {
+          // 1. Desktop or Add Expense Tab: Pre-fill the manual form fields for review
           let fullDescription = parsedExpense.description || '';
           if (parsedExpense.merchant && parsedExpense.merchant !== 'Unknown') {
             if (!fullDescription.toLowerCase().includes(parsedExpense.merchant.toLowerCase())) {
@@ -254,8 +255,9 @@ export const useDashboardState = () => {
           });
 
           setQuickLogText('');
+          showToast('AI command parsed! Review details in the form below.', 'info');
         } else {
-          // 2. Home Tab or Desktop View: Directly log it into the database instantly
+          // 2. Mobile Home Tab: Directly log it into the database instantly
           const saveRes = await fetch(`${API_URL}/expenses`, {
             method: 'POST',
             headers: {
@@ -268,6 +270,7 @@ export const useDashboardState = () => {
           if (saveRes.ok) {
             setQuickLogText('');
             fetchDashboardData();
+            showToast('Expense logged instantly via AI!');
           } else {
             setError('Parsed successfully, but failed to save in database.');
           }
@@ -423,6 +426,28 @@ export const useDashboardState = () => {
     : budgets.reduce((sum, b) => sum + (b.category !== 'Overall' ? b.limitAmount : 0), 0);
   const remainingBudget = totalBudget - totalSpending;
 
+  // Timeframe filter logic
+  const todayStr = new Date().toISOString().split('T')[0];
+  const getFilteredExpenses = () => {
+    const now = new Date();
+    return expenses.filter((exp) => {
+      const expDate = new Date(exp.date);
+      if (timeframe === 'Daily') {
+        return exp.date === todayStr;
+      }
+      if (timeframe === 'Weekly') {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(now.getDate() - 7);
+        return expDate >= oneWeekAgo && expDate <= now;
+      }
+      // Monthly
+      return exp.date.startsWith(selectedMonth);
+    });
+  };
+
+  const currentFilteredExpenses = getFilteredExpenses();
+  const filteredTotalSpending = currentFilteredExpenses.reduce((sum, e) => sum + e.amount, 0);
+
   // Grouped category values
   const categorySpending = CATEGORIES.reduce((acc, cat) => {
     const sum = currentMonthExpenses.filter((e) => e.category === cat).reduce((s, e) => s + e.amount, 0);
@@ -445,6 +470,28 @@ export const useDashboardState = () => {
     .filter(([_, amt]) => amt > 0)
     .map(([cat, amt]) => ({ name: cat, value: amt }));
 
+  // Grouped category values for selected timeframe
+  const filteredCategorySpending = CATEGORIES.reduce((acc, cat) => {
+    const sum = currentFilteredExpenses.filter((e) => e.category === cat).reduce((s, e) => s + e.amount, 0);
+    acc[cat] = sum;
+    return acc;
+  }, {});
+
+  // Find top category for selected timeframe
+  let filteredTopCategory = 'None';
+  let filteredTopAmount = 0;
+  Object.entries(filteredCategorySpending).forEach(([cat, amt]) => {
+    if (amt > filteredTopAmount) {
+      filteredTopAmount = amt;
+      filteredTopCategory = cat;
+    }
+  });
+
+  // SVG Chart Computations (Donut Chart) for selected timeframe
+  const filteredDonutData = Object.entries(filteredCategorySpending)
+    .filter(([_, amt]) => amt > 0)
+    .map(([cat, amt]) => ({ name: cat, value: amt }));
+
   const chartColors = [
     'var(--chart-1)',
     'var(--chart-2)',
@@ -456,27 +503,6 @@ export const useDashboardState = () => {
     'var(--chart-8)',
   ];
 
-  // Timeframe filter logic
-  const todayStr = new Date().toISOString().split('T')[0];
-  const getFilteredExpenses = () => {
-    const now = new Date();
-    return expenses.filter((exp) => {
-      const expDate = new Date(exp.date);
-      if (timeframe === 'Daily') {
-        return exp.date === todayStr;
-      }
-      if (timeframe === 'Weekly') {
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(now.getDate() - 7);
-        return expDate >= oneWeekAgo && expDate <= now;
-      }
-      // Monthly
-      return exp.date.startsWith(selectedMonth);
-    });
-  };
-
-  const currentFilteredExpenses = getFilteredExpenses();
-  const filteredTotalSpending = currentFilteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
   // Dynamic Weekly Stats
   const spentLast7Days = expenses
@@ -588,5 +614,8 @@ export const useDashboardState = () => {
     setConfirmState,
     isOnboardingOpen,
     setIsOnboardingOpen,
+    filteredCategorySpending,
+    filteredTopCategory,
+    filteredDonutData,
   };
 };

@@ -48,6 +48,12 @@ export const DesktopLayout = ({ state }) => {
     handleCreateGoal,
     handleUpdateGoalFunding,
     handleDeleteGoal,
+    timeframe,
+    setTimeframe,
+    currentFilteredExpenses,
+    filteredTotalSpending,
+    filteredTopCategory,
+    filteredDonutData,
   } = state;
 
   return (
@@ -56,7 +62,6 @@ export const DesktopLayout = ({ state }) => {
       <DesktopSidebar
         user={user}
         logout={logout}
-        setIsScannerOpen={setIsScannerOpen}
         setIsChatOpen={setIsChatOpen}
         theme={theme}
         toggleTheme={toggleTheme}
@@ -74,15 +79,41 @@ export const DesktopLayout = ({ state }) => {
           </div>
 
           <div className="desktop-header-actions">
-            <input
-              type="month"
-              className="form-input desktop-month-picker"
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-            />
-            <button className="btn btn-primary" onClick={() => setIsScannerOpen(true)}>
-              <FileText size={16} /> Scan Receipt
-            </button>
+            {/* Timeframe Selector Button Group */}
+            <div className="desktop-timeframe-picker" style={{ display: 'flex', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
+              {['Daily', 'Weekly', 'Monthly'].map((tf) => (
+                <button
+                  key={tf}
+                  className={`btn ${timeframe === tf ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setTimeframe(tf)}
+                  style={{
+                    padding: '0.45rem 1rem',
+                    fontSize: '0.82rem',
+                    border: 'none',
+                    borderRadius: '0',
+                    boxShadow: 'none',
+                    background: timeframe === tf ? 'var(--text-primary)' : 'transparent',
+                    color: timeframe === tf ? 'var(--bg-color)' : 'var(--text-secondary)',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {tf}
+                </button>
+              ))}
+            </div>
+
+            {/* Conditional Month Picker */}
+            {timeframe === 'Monthly' && (
+              <input
+                type="month"
+                className="form-input desktop-month-picker"
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                style={{ width: '135px', padding: '0.45rem', fontSize: '0.85rem' }}
+              />
+            )}
+
             <button className="btn btn-secondary desktop-chat-advisor-btn" onClick={() => setIsChatOpen(true)}>
               <Bot size={16} color="white" /> Chat Advisor
             </button>
@@ -98,10 +129,10 @@ export const DesktopLayout = ({ state }) => {
 
         {/* Metrics Cards */}
         <MetricCards
-          totalSpending={totalSpending}
+          totalSpending={filteredTotalSpending}
           totalBudget={totalBudget}
-          remainingBudget={remainingBudget}
-          topCategory={topCategory}
+          remainingBudget={totalBudget - filteredTotalSpending}
+          topCategory={filteredTopCategory}
         />
 
         {/* Quick Log Sparkle Bar */}
@@ -126,8 +157,8 @@ export const DesktopLayout = ({ state }) => {
 
         {/* Charts & Analytics */}
         <section className="desktop-charts-grid">
-          <SpendingTrendChart currentMonthExpenses={currentMonthExpenses} />
-          <CategoryDonutChart donutData={donutData} totalSpending={totalSpending} chartColors={chartColors} />
+          <SpendingTrendChart currentMonthExpenses={currentFilteredExpenses} />
+          <CategoryDonutChart donutData={filteredDonutData} totalSpending={filteredTotalSpending} chartColors={chartColors} />
         </section>
 
         {/* Lower Content: Expenses Log & Budgets Setup */}
@@ -136,7 +167,7 @@ export const DesktopLayout = ({ state }) => {
           <div className="glass-card">
             <div className="transaction-list-header">
               <h4 className="tx-list-title">Transactions Log</h4>
-              <span className="tx-list-count">{currentMonthExpenses.length} transactions</span>
+              <span className="tx-list-count">{currentFilteredExpenses.length} transactions</span>
             </div>
 
             <TransactionForm
@@ -147,7 +178,7 @@ export const DesktopLayout = ({ state }) => {
             />
 
             <TransactionTable
-              currentMonthExpenses={currentMonthExpenses}
+              currentMonthExpenses={currentFilteredExpenses}
               getBadgeClass={getBadgeClass}
               handleDeleteExpense={handleDeleteExpense}
             />
