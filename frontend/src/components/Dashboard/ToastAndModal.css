@@ -1,0 +1,255 @@
+/* --- CUSTOM TOASTS --- */
+.toast-container {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1200;
+  pointer-events: none;
+  width: 95%;
+  max-width: 380px;
+}
+
+.toast-item {
+  pointer-events: auto;
+  background: var(--surface-color);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-glow);
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: var(--shadow-glow);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-item.exit {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-icon.success {
+  color: #34d399; /* Green check icon color */
+}
+
+.toast-icon.info {
+  color: #38bdf8; /* Blue info icon color */
+}
+
+.toast-icon.error {
+  color: #fb7185; /* Red error icon color */
+}
+
+.toast-message {
+  flex-grow: 1;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.toast-close:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(-30px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- CUSTOM CONFIRM MODAL --- */
+.confirm-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 0.25s ease forwards;
+}
+
+.confirm-modal {
+  background: var(--surface-color);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-glow);
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  transform: scale(0.95);
+  opacity: 0;
+  animation: modal-desktop-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.confirm-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+}
+
+.confirm-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.confirm-icon {
+  color: #fb7185; /* Soft warning red */
+  display: flex;
+  align-items: center;
+}
+
+.confirm-body {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.confirm-actions .btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+}
+
+.btn-danger {
+  background: #fb7185;
+  color: #000;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  background: #f43f5e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-desktop-in {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes modal-mobile-in {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- MOBILE SPECIFIC LAYOUT: Bottom Sheet Modal Drawer --- */
+@media (max-width: 767px) {
+  .confirm-backdrop {
+    align-items: flex-end; /* Slide up from bottom on mobile */
+  }
+
+  .confirm-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 24px 20px 32px 20px;
+    transform: translateY(100%);
+    animation: modal-mobile-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Safe bottom spacing for modern mobile browsers with home bars */
+  .confirm-actions {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    width: 100%;
+  }
+
+  .confirm-actions .btn {
+    flex: 1; /* Stretch buttons equally on mobile */
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
+  .toast-container {
+    top: auto;
+    bottom: 90px; /* Float above the mobile nav dock */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+  }
+
+  @keyframes toast-in {
+    from {
+      transform: translateY(30px) scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+}

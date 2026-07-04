@@ -4,6 +4,8 @@ import { DesktopLayout } from './Dashboard/DesktopLayout';
 import { MobileLayout } from './Dashboard/MobileLayout';
 import { ReceiptScanner } from './ReceiptScanner';
 import { AIChatbot } from './AIChatbot';
+import { ToastContainer, ConfirmModal } from './Dashboard/ToastAndModal';
+import { OnboardingWizard } from './Dashboard/OnboardingWizard';
 import './Dashboard.css';
 
 export const Dashboard = () => {
@@ -27,6 +29,13 @@ export const Dashboard = () => {
         isOpen={state.isChatOpen}
         onClose={() => state.setIsChatOpen(false)}
       />
+
+      <ToastContainer toasts={state.toasts} removeToast={state.removeToast} />
+      <ConfirmModal confirmState={state.confirmState} setConfirmState={state.setConfirmState} />
+      
+      {state.isOnboardingOpen && (
+        <OnboardingWizard state={state} />
+      )}
     </div>
   );
 };

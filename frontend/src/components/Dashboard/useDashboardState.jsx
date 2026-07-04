@@ -68,6 +68,7 @@ export const getCategoryIcon = (cat) => {
 export const useDashboardState = () => {
   const { token, user, logout } = useAuth();
   const [expenses, setExpenses] = useState([]);
+  const [savingsGoals, setSavingsGoals] = useState([]);
   const [budgets, setBudgets] = useState([]);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
@@ -92,8 +93,33 @@ export const useDashboardState = () => {
   const [quickLogLoading, setQuickLogLoading] = useState(false);
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7)); // YYYY-MM
   const [error, setError] = useState(null);
+  const [toasts, setToasts] = useState([]);
+  const [confirmState, setConfirmState] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
+
+  const showToast = (message, type = 'success') => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, exit: true } : t))
+      );
+      setTimeout(() => {
+        setToasts((prev) => prev.filter((t) => t.id !== id));
+      }, 300);
+    }, 3000);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   // Budget editing state
   const [editingBudget, setEditingBudget] = useState({});
@@ -114,6 +140,13 @@ export const useDashboardState = () => {
       });
       const expensesData = await expensesRes.json();
       if (expensesRes.ok) setExpenses(expensesData);
+
+      // Fetch Savings Goals
+      const savingsRes = await fetch(`${API_URL}/savings`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const savingsData = await savingsRes.json();
+      if (savingsRes.ok) setSavingsGoals(savingsData);
 
       // Fetch Budgets for selected month
       const budgetsRes = await fetch(`${API_URL}/budgets?month=${selectedMonth}`, {
@@ -142,6 +175,16 @@ export const useDashboardState = () => {
     fetchDashboardData();
   }, [selectedMonth, token]);
 
+  useEffect(() => {
+    if (user && token) {
+      const isMobile = window.innerWidth <= 767;
+      const onboarded = localStorage.getItem(`tally_onboarded_mobile_v1_${user.id}`);
+      if (isMobile && onboarded !== 'true') {
+        setIsOnboardingOpen(true);
+      }
+    }
+  }, [user, token]);
+
   const handleManualSubmit = async (e) => {
     e.preventDefault();
     if (!token) return;
@@ -165,7 +208,7 @@ export const useDashboardState = () => {
         });
         fetchDashboardData();
         setActiveMobileView('home');
-        alert('Expense logged successfully!');
+        showToast('Expense logged successfully!');
       } else {
         const errorData = await res.json();
         setError(errorData.error || 'Failed to add expense');
@@ -241,25 +284,108 @@ export const useDashboardState = () => {
   };
 
   const handleDeleteExpense = async (id) => {
-    if (!token || !window.confirm('Delete this transaction?')) return;
+    if (!token) return;
+    setConfirmState({
+      isOpen: true,
+      title: 'Delete Transaction',
+      message: 'Are you sure you want to permanently delete this transaction? This action cannot be undone.',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`${API_URL}/expenses/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
+          if (res.ok) {
+            fetchDashboardData();
+            showToast('Transaction deleted successfully');
+          } else {
+            showToast('Failed to delete transaction', 'error');
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('An error occurred while deleting', 'error');
+        }
+      }
+    });
+  };
+
+  const handleCreateGoal = async (goal) => {
+    if (!token) return;
     try {
-      const res = await fetch(`${API_URL}/expenses/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(`${API_URL}/savings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(goal),
       });
-
       if (res.ok) {
         fetchDashboardData();
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Failed to create savings goal');
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleUpdateBudget = async (category) => {
+  const handleUpdateGoalFunding = async (id, newAmount) => {
     if (!token) return;
-    const limitAmount = parseFloat(editingBudget[category]);
+    try {
+      const res = await fetch(`${API_URL}/savings/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentAmount: newAmount }),
+      });
+      if (res.ok) {
+        fetchDashboardData();
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Failed to update goal funding');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteGoal = async (id) => {
+    if (!token) return;
+    setConfirmState({
+      isOpen: true,
+      title: 'Delete Savings Goal',
+      message: 'Are you sure you want to delete this savings goal? Your saved progress details for this vault will be removed.',
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`${API_URL}/savings/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (res.ok) {
+            fetchDashboardData();
+            showToast('Savings goal deleted successfully');
+          } else {
+            const errorData = await res.json();
+            setError(errorData.error || 'Failed to delete goal');
+            showToast('Failed to delete savings goal', 'error');
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('An error occurred while deleting', 'error');
+        }
+      }
+    });
+  };
+
+  const handleUpdateBudget = async (category, customAmount = null) => {
+    if (!token) return;
+    const rawVal = customAmount !== null ? customAmount : editingBudget[category];
+    const limitAmount = parseFloat(rawVal);
     if (isNaN(limitAmount) || limitAmount < 0) return;
 
     try {
@@ -278,7 +404,7 @@ export const useDashboardState = () => {
 
       if (res.ok) {
         fetchDashboardData();
-        alert(`Budget updated for ${category}!`);
+        showToast(`Budget updated for ${category}!`);
       }
     } catch (err) {
       console.error(err);
@@ -288,6 +414,8 @@ export const useDashboardState = () => {
   // Calculations for current month's transactions
   const currentMonthExpenses = expenses.filter((e) => e.date.startsWith(selectedMonth));
   const totalSpending = currentMonthExpenses.reduce((sum, e) => sum + e.amount, 0);
+
+  const totalVaultBalance = savingsGoals.reduce((sum, g) => sum + g.currentAmount, 0);
 
   const overallBudgetMatch = budgets.find((b) => b.category === 'Overall');
   const totalBudget = overallBudgetMatch
@@ -398,6 +526,7 @@ export const useDashboardState = () => {
     user,
     logout,
     expenses,
+    savingsGoals,
     budgets,
     manualForm,
     setManualForm,
@@ -427,8 +556,12 @@ export const useDashboardState = () => {
     handleQuickLog,
     handleDeleteExpense,
     handleUpdateBudget,
+    handleCreateGoal,
+    handleUpdateGoalFunding,
+    handleDeleteGoal,
     currentMonthExpenses,
     totalSpending,
+    totalVaultBalance,
     overallBudgetMatch,
     totalBudget,
     remainingBudget,
@@ -448,5 +581,12 @@ export const useDashboardState = () => {
     strokeDashoffset,
     theme,
     toggleTheme,
+    toasts,
+    showToast,
+    removeToast,
+    confirmState,
+    setConfirmState,
+    isOnboardingOpen,
+    setIsOnboardingOpen,
   };
 };

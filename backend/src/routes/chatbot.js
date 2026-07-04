@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/db.js';
-import { expenses, budgets } from '../db/schema.js';
+import { expenses, budgets, savingsGoals } from '../db/schema.js';
 import { authenticateToken } from '../middleware/auth.js';
 import { getFinancialAdvice } from '../services/groq.js';
 
@@ -31,11 +31,17 @@ router.post('/', authenticateToken, async (req, res) => {
       .from(budgets)
       .where(eq(budgets.userId, userId));
 
+    // 2b. Gather all savings goals for context
+    const userGoals = await db
+      .select()
+      .from(savingsGoals)
+      .where(eq(savingsGoals.userId, userId));
+
     // 3. Format expenses context string
     const expensesContext = userExpenses
       .map(
         (e) =>
-          `- ${e.date}: spent $${e.amount.toFixed(2)} at "${e.merchant}" in category "${e.category}" (${e.description})`
+          `- ${e.date}: spent ₹${e.amount.toFixed(2)} at "${e.merchant}" in category "${e.category}" (${e.description})`
       )
       .join('\n') || 'No expenses logged yet.';
 
@@ -43,9 +49,17 @@ router.post('/', authenticateToken, async (req, res) => {
     const budgetsContext = userBudgets
       .map(
         (b) =>
-          `- Category "${b.category}": limit of $${b.limitAmount.toFixed(2)} for month ${b.month}`
+          `- Category "${b.category}": limit of ₹${b.limitAmount.toFixed(2)} for month ${b.month}`
       )
       .join('\n') || 'No budgets configured yet.';
+
+    // 4b. Format savings goals context string
+    const goalsContext = userGoals
+      .map(
+        (g) =>
+          `- Goal "${g.name}": saved ₹${g.currentAmount.toFixed(2)} of ₹${g.targetAmount.toFixed(2)} by target date ${g.targetDate}`
+      )
+      .join('\n') || 'No savings goals set up yet.';
 
     // 5. Structure history properly for the Gemini SDK chat
     // Format required: array of { role: 'user'|'model', parts: [{ text: string }] }
@@ -69,7 +83,7 @@ router.post('/', authenticateToken, async (req, res) => {
     });
 
     // 6. Request financial advice from service
-    const advice = await getFinancialAdvice(formattedHistory, expensesContext, budgetsContext);
+    const advice = await getFinancialAdvice(formattedHistory, expensesContext, budgetsContext, goalsContext);
 
     return res.json({ response: advice });
   } catch (error) {

@@ -56,6 +56,12 @@ export const MobileLayout = ({ state }) => {
     quickLogLoading,
     error,
     setIsChatOpen,
+    savingsGoals,
+    totalVaultBalance,
+    handleUpdateGoalFunding,
+    handleCreateGoal,
+    handleDeleteGoal,
+    setIsOnboardingOpen,
   } = state;
 
   return (
@@ -76,7 +82,7 @@ export const MobileLayout = ({ state }) => {
       {/* Bottom Curved Body Area */}
       <div className="mobile-curved-container">
         {error && (
-          <div className="error-banner" style={{ marginBottom: '1.25rem' }}>
+          <div className="error-banner">
             <AlertTriangle size={18} className="error-banner-icon" />
             <span>{error}</span>
           </div>
@@ -99,6 +105,11 @@ export const MobileLayout = ({ state }) => {
             quickLogText={quickLogText}
             setQuickLogText={setQuickLogText}
             quickLogLoading={quickLogLoading}
+            savingsGoals={savingsGoals}
+            totalVaultBalance={totalVaultBalance}
+            handleUpdateGoalFunding={handleUpdateGoalFunding}
+            handleCreateGoal={handleCreateGoal}
+            handleDeleteGoal={handleDeleteGoal}
           />
         )}
 
@@ -158,6 +169,7 @@ export const MobileLayout = ({ state }) => {
             overallBudgetMatch={overallBudgetMatch}
             theme={theme}
             toggleTheme={toggleTheme}
+            setIsOnboardingOpen={setIsOnboardingOpen}
           />
         )}
       </div>

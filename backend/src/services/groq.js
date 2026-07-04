@@ -43,7 +43,7 @@ export async function scanReceipt(fileBuffer, mimeType) {
 Return a JSON object conforming exactly to this schema:
 {
   "merchant": "string (name of the merchant/store, default to 'Unknown')",
-  "amount": "number (total amount spent)",
+  "amount": "number (total amount spent; MUST keep the exact raw amount value; do NOT apply any currency conversions, exchange rates, or deductions)",
   "category": "string (MUST be exactly one of: ${CATEGORIES.join(', ')})",
   "date": "string (transaction date in YYYY-MM-DD format. If not visible, use current date: ${currentDate})",
   "description": "string (brief summary of items purchased)"
@@ -142,7 +142,7 @@ Today is ${currentDate}.
 Return a JSON object conforming exactly to this schema:
 {
   "merchant": "string (name of the store or service, default to 'Unknown')",
-  "amount": "number (amount spent)",
+  "amount": "number (amount spent; MUST keep the exact raw amount value; do NOT apply any currency conversions, exchange rates, or deductions)",
   "category": "string (MUST be exactly one of: ${CATEGORIES.join(', ')})",
   "date": "string (transaction date in YYYY-MM-DD format. Infer from relative text if any, e.g. 'yesterday')",
   "description": "string (clean explanation of what was bought)"
@@ -198,7 +198,7 @@ Return a JSON object conforming exactly to this schema:
 /**
  * AI Financial Chatbot advisor
  */
-export async function getFinancialAdvice(chatHistory, expensesContext, budgetsContext) {
+export async function getFinancialAdvice(chatHistory, expensesContext, budgetsContext, goalsContext) {
   if (!apiKey) {
     return `### Smart Financial Advisor (Mock Mode)
 It looks like **GROQ_API_KEY** is not configured. Here is some general financial advice:
@@ -212,8 +212,11 @@ It looks like **GROQ_API_KEY** is not configured. Here is some general financial
     const systemPrompt = `You are Tally, a premium, intelligent AI financial advisor.
 You are helping a user manage their money, track categories, stay within budgets, and optimize savings.
 
-Below is the user's transaction data and budgets for reference.
+Below is the user's transaction data, budgets, and active savings goals for reference.
 ---
+USER ACTIVE SAVINGS GOALS:
+${goalsContext}
+
 USER EXPENSES:
 ${expensesContext}
 
@@ -222,11 +225,11 @@ ${budgetsContext}
 ---
 
 Rules:
-1. Refer to actual expenses or budgets in the context if the user asks about them (e.g. "how much did I spend", "am I on budget").
+1. Refer to active savings goals, expenses, or budgets in the context if the user asks about them (e.g. "what are my savings goals", "how much do I need to save for X", "am I on budget").
 2. Keep replies concise, conversational, and encouraging.
 3. Format output beautifully in Markdown (use bullet points, bold text, etc.).
-4. Do not make up transactions outside of the context provided above.
-5. If there is no data, explain that they can start by adding expenses or scanning receipts.`;
+4. Do not make up transactions or goals outside of the context provided above.
+5. If there is no data, explain that they can start by adding expenses, setting up savings goals, or scanning receipts.`;
 
     // Map history to OpenAI/Groq compatible structure
     const mappedMessages = chatHistory.map((msg) => ({

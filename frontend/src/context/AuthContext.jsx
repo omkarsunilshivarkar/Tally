@@ -58,6 +58,9 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem('token', data.token);
+    if (localStorage.getItem(`tally_onboarded_mobile_v1_${data.user.id}`) === null) {
+      localStorage.setItem(`tally_onboarded_mobile_v1_${data.user.id}`, 'true');
+    }
     setToken(data.token);
     setUser(data.user);
   };
@@ -78,6 +81,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem('token', data.token);
+    localStorage.setItem(`tally_onboarded_mobile_v1_${data.user.id}`, 'false');
     setToken(data.token);
     setUser(data.user);
   };

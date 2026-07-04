@@ -225,4 +225,379 @@
     font-weight: bold;
     letter-spacing: 1px;
   }
+
+  /* Savings Goals Carousel */
+  .mobile-goals-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0.75rem;
+    padding: 0.25rem 0.1rem;
+    margin-top: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-goals-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-goal-card {
+    flex: 0 0 85%;
+    scroll-snap-align: start;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .mobile-goal-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+  }
+
+  .mobile-goal-card-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    /* letter-spacing: -0.01em; */
+  }
+
+  .mobile-goal-card-del-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+    padding: 0.25rem;
+    margin-top: -4px;
+  }
+
+  .mobile-goal-card-del-btn:active {
+    color: #ef4444;
+    opacity: 1;
+  }
+
+  .mobile-goal-card-meta {
+    font-family: var(--font-sans);
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+
+  /* Circular progress style rules */
+  .mobile-goal-circle-wrapper {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-goal-circle-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .mobile-goal-circle-percentage.completed {
+    color: #10b981;
+  }
+
+  .mobile-fund-manage-btn {
+    width: 100%;
+    margin-top: 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-md);
+    padding: 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-fund-manage-btn:active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(0.98);
+  }
+
+  /* Slide-up Bottom Sheet Drawer */
+  .mobile-bottom-sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .mobile-bottom-sheet {
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-color);
+    border-top: 1px solid var(--border-color);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    padding: 1.5rem;
+    padding-bottom: 2.25rem;
+    box-sizing: border-box;
+    animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.6);
+  }
+
+  .mobile-bottom-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: 2px;
+    margin: 0 auto 1.25rem auto;
+  }
+
+  .mobile-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1.25rem;
+  }
+
+  .mobile-sheet-header-title-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-sheet-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  .mobile-sheet-subtitle {
+    letter-spacing: 0.5px;
+    font-family: var(--font-sans);
+    font-size: 0.90rem;
+    color: var(--text-muted);
+    margin: 0.3rem 0 0 0;
+  }
+
+  .mobile-sheet-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--transition-fast);
+    margin-top: -6px;
+    margin-right: -6px;
+  }
+
+  .mobile-sheet-close-btn:active {
+    opacity: 0.7;
+  }
+
+  .mobile-sheet-input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .mobile-sheet-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .mobile-sheet-buttons button {
+    flex: 1;
+    padding: 0.6rem;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Refactored Layout Overrides for Mobile Vault */
+  .mobile-vault-container {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .mobile-vault-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .mobile-vault-title {
+    margin: 0;
+  }
+
+  .mobile-vault-balance-badge {
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #34d399;
+  }
+
+  .mobile-vault-creation-toggle-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .mobile-btn-new-goal-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.75rem;
+    width: 100%;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .mobile-new-goal-form-inline {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mobile-form-group-compact {
+    margin: 0;
+  }
+
+  .mobile-btn-submit-goal {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mobile-empty-state-compact {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .mobile-goal-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 0.2rem;
+  }
+
+  .mobile-goal-card-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .mobile-goal-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mobile-goal-card-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mobile-goal-card-stats-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .mobile-goal-card-stats-value {
+    font-size: 1.10rem;
+    letter-spacing: 1px !important;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .mobile-goal-card-stats-target {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+
+
+  .mobile-btn-withdraw {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  .mobile-btn-withdraw:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
 }

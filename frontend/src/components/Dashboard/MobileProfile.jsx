@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, LogOut, Sun, Moon } from 'lucide-react';
+import { User, LogOut, Sun, Moon, HelpCircle } from 'lucide-react';
 import './MobileProfile.css';
 
 export const MobileProfile = ({
@@ -15,6 +15,7 @@ export const MobileProfile = ({
   overallBudgetMatch,
   theme,
   toggleTheme,
+  setIsOnboardingOpen,
 }) => {
   return (
     <div className="mobile-view-fade mobile-profile-section">
@@ -99,6 +100,13 @@ export const MobileProfile = ({
           <button onClick={toggleTheme} className="btn btn-secondary theme-toggle-btn">
             {theme === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
             <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
+          </button>
+        </div>
+        <div className="mobile-flex-align-center" style={{ justifyContent: 'space-between', width: '100%', marginTop: '12px', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+          <span className="mobile-flex-span" style={{ fontSize: '15px' }}>App Guide</span>
+          <button onClick={() => setIsOnboardingOpen(true)} className="btn btn-secondary theme-toggle-btn" style={{ gap: '6px' }}>
+            <HelpCircle size={16} />
+            <span>Restart Tour</span>
           </button>
         </div>
       </div>

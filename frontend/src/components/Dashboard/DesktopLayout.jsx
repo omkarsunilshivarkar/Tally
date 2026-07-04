@@ -7,6 +7,7 @@ import { CategoryDonutChart } from './CategoryDonutChart';
 import { TransactionForm } from './TransactionForm';
 import { TransactionTable } from './TransactionTable';
 import { BudgetSettings } from './BudgetSettings';
+import { SavingsVault } from './SavingsVault';
 import { CATEGORIES, getBadgeClass } from './useDashboardState.jsx';
 import './DesktopLayout.css';
 
@@ -42,6 +43,11 @@ export const DesktopLayout = ({ state }) => {
     overallBudgetMatch,
     theme,
     toggleTheme,
+    savingsGoals,
+    totalVaultBalance,
+    handleCreateGoal,
+    handleUpdateGoalFunding,
+    handleDeleteGoal,
   } = state;
 
   return (
@@ -159,6 +165,15 @@ export const DesktopLayout = ({ state }) => {
             overallBudgetMatch={overallBudgetMatch}
           />
         </section>
+
+        {/* Savings Vault Section */}
+        <SavingsVault
+          savingsGoals={savingsGoals}
+          totalVaultBalance={totalVaultBalance}
+          handleCreateGoal={handleCreateGoal}
+          handleUpdateGoalFunding={handleUpdateGoalFunding}
+          handleDeleteGoal={handleDeleteGoal}
+        />
       </main>
     </div>
   );

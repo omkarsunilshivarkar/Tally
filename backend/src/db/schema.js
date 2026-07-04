@@ -27,3 +27,14 @@ export const budgets = sqliteTable('budgets', {
   month: text('month').notNull(), // 'YYYY-MM'
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
+
+export const savingsGoals = sqliteTable('savings_goals', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  targetAmount: real('target_amount').notNull(),
+  currentAmount: real('current_amount').default(0).notNull(),
+  targetDate: text('target_date').notNull(), // 'YYYY-MM-DD'
+  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
+});
+
