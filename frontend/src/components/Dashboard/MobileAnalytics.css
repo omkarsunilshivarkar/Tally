@@ -24,7 +24,7 @@
   .mobile-input-compact {
     font-size: 16px !important;
     padding: 0.5rem 0.75rem !important;
-    background: var(--surface-color) !important;
+    background-color: var(--surface-color) !important;
   }
 
   .w-100 {
