@@ -35,7 +35,6 @@ export const DesktopSidebar = ({
         />
         <div>
           <h1 className="sidebar-logo-text">Tally</h1>
-          <span className="sidebar-logo-subtext">AI Financial Hub</span>
         </div>
       </div>
 
