@@ -155,9 +155,8 @@ export const DesktopLayout = ({ state }) => {
           </form>
         </section>
 
-        {/* Charts & Analytics */}
         <section className="desktop-charts-grid">
-          <SpendingTrendChart currentMonthExpenses={currentFilteredExpenses} />
+          <SpendingTrendChart currentMonthExpenses={currentFilteredExpenses} timeframe={timeframe} selectedMonth={selectedMonth} />
           <CategoryDonutChart donutData={filteredDonutData} totalSpending={filteredTotalSpending} chartColors={chartColors} />
         </section>
 

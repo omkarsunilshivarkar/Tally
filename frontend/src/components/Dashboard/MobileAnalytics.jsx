@@ -1,4 +1,5 @@
 import React from 'react';
+import { SpendingTrendChart } from './SpendingTrendChart';
 import './MobileAnalytics.css';
 
 export const MobileAnalytics = ({
@@ -28,55 +29,12 @@ export const MobileAnalytics = ({
       </div>
 
       {/* Daily Trend line Chart */}
-      <div className="glass-card glass-card-padded-compact">
-        <h4 className="mobile-section-title">Daily Spending Trend</h4>
-        <div className="mobile-chart-container">
-          {currentMonthExpenses.length === 0 ? (
-            <p className="mobile-chart-empty-text">No transactions to plot</p>
-          ) : (
-            <svg width="100%" height="160" viewBox="0 0 500 200" className="trend-chart-svg">
-              <line x1="40" y1="20" x2="480" y2="20" stroke="var(--border-color)" strokeDasharray="3" />
-              <line x1="40" y1="130" x2="480" y2="130" stroke="var(--border-color)" strokeDasharray="3" />
-              <line x1="40" y1="170" x2="480" y2="170" stroke="var(--border-color)" />
-              {(() => {
-                const daySums = {};
-                currentMonthExpenses.forEach((exp) => {
-                  const day = new Date(exp.date).getDate();
-                  daySums[day] = (daySums[day] || 0) + exp.amount;
-                });
-                const sortedDays = Object.keys(daySums).map(Number).sort((a, b) => a - b);
-                if (sortedDays.length === 0) return null;
-
-                const maxAmt = Math.max(...Object.values(daySums), 20);
-                const getCoords = (day, amt) => {
-                  const x = 40 + (day / 31) * 440;
-                  const y = 170 - (amt / maxAmt) * 150;
-                  return { x, y };
-                };
-
-                const points = sortedDays.map((day) => getCoords(day, daySums[day]));
-                let d = `M ${points[0].x} ${points[0].y}`;
-                for (let i = 1; i < points.length; i++) {
-                  d += ` L ${points[i].x} ${points[i].y}`;
-                }
-                return (
-                  <>
-                    <path d={d} fill="none" stroke="var(--text-primary)" strokeWidth="2" />
-                    {points.map((p, idx) => (
-                      <g key={idx}>
-                        <circle cx={p.x} cy={p.y} r="4" fill="var(--text-primary)" />
-                        <text x={p.x} y={p.y - 8} textAnchor="middle" fill="var(--text-primary)" fontSize="9">
-                          ₹{daySums[sortedDays[idx]].toFixed(0)}
-                        </text>
-                      </g>
-                    ))}
-                  </>
-                );
-              })()}
-            </svg>
-          )}
-        </div>
-      </div>
+      <SpendingTrendChart
+        currentMonthExpenses={currentMonthExpenses}
+        timeframe="Monthly"
+        selectedMonth={selectedMonth}
+        isMobile={true}
+      />
 
       {/* Spending by Category Donut */}
       <div className="glass-card glass-card-padded-compact">
