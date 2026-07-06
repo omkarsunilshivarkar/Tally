@@ -86,6 +86,29 @@ export const AuthProvider = ({ children }) => {
     setUser(data.user);
   };
 
+  const loginWithGoogle = async (credential) => {
+    const res = await fetch(`${API_URL}/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ credential }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Google login failed');
+    }
+
+    localStorage.setItem('token', data.token);
+    if (localStorage.getItem(`tally_onboarded_mobile_v1_${data.user.id}`) === null) {
+      localStorage.setItem(`tally_onboarded_mobile_v1_${data.user.id}`, 'true');
+    }
+    setToken(data.token);
+    setUser(data.user);
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setToken(null);
@@ -93,7 +116,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );

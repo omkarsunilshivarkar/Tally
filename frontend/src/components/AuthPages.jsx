@@ -23,7 +23,66 @@ export const AuthPages = () => {
   const [error, setError] = useState(null);
   const [infoMessage, setInfoMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { login, register } = useAuth();
+  const { login, register, loginWithGoogle } = useAuth();
+
+  const handleGoogleCredentialResponse = async (response) => {
+    setError(null);
+    setLoading(true);
+    try {
+      await loginWithGoogle(response.credential);
+    } catch (err) {
+      setError(err.message || 'Google authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const initGoogleAuth = () => {
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      if (!clientId) {
+        console.warn('VITE_GOOGLE_CLIENT_ID is not defined in frontend environment');
+        return;
+      }
+
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: handleGoogleCredentialResponse,
+        });
+
+        // Try to render standard button in whichever container is currently mounted
+        const btnElement = document.getElementById('google-signin-btn-welcome') || document.getElementById('google-signin-btn-form');
+        if (btnElement) {
+          const parentWidth = btnElement.parentElement?.offsetWidth || 360;
+          const buttonWidth = Math.min(Math.max(parentWidth, 200), 400).toString();
+
+          window.google.accounts.id.renderButton(btnElement, {
+            theme: 'outline',
+            size: 'large',
+            width: buttonWidth,
+            shape: 'rectangular',
+            text: 'signin_with',
+          });
+        }
+
+        // Trigger Google One Tap login prompt
+        window.google.accounts.id.prompt();
+      }
+    };
+
+    if (window.google?.accounts?.id) {
+      initGoogleAuth();
+    } else {
+      const interval = setInterval(() => {
+        if (window.google?.accounts?.id) {
+          initGoogleAuth();
+          clearInterval(interval);
+        }
+      }, 500);
+      return () => clearInterval(interval);
+    }
+  }, [stage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,6 +150,16 @@ export const AuthPages = () => {
             >
               Sign Up
             </button>
+          </div>
+
+          <div className="auth-divider">
+            <span className="auth-divider-line"></span>
+            <span className="auth-divider-text">or</span>
+            <span className="auth-divider-line"></span>
+          </div>
+
+          <div className="google-auth-btn-container">
+            <div id="google-signin-btn-welcome"></div>
           </div>
 
           <div className="auth-forgot-password-link-wrapper">
@@ -224,6 +293,16 @@ export const AuthPages = () => {
             {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
+
+        <div className="auth-divider">
+          <span className="auth-divider-line"></span>
+          <span className="auth-divider-text">or</span>
+          <span className="auth-divider-line"></span>
+        </div>
+
+        <div className="google-auth-btn-container">
+          <div id="google-signin-btn-form"></div>
+        </div>
 
         <div className="auth-switch-prompt">
           <span className="auth-switch-text">
