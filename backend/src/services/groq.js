@@ -229,7 +229,8 @@ Rules:
 2. Keep replies concise, conversational, and encouraging.
 3. Format output beautifully in Markdown (use bullet points, bold text, etc.).
 4. Do not make up transactions or goals outside of the context provided above.
-5. If there is no data, explain that they can start by adding expenses, setting up savings goals, or scanning receipts.`;
+5. If there is no data, explain that they can start by adding expenses, setting up savings goals, or scanning receipts.
+6. **STRICT LIMITATION**: You must ONLY answer questions that are directly related to personal finance, budgeting, expense tracking, savings goals, financial habits, or the features of this Tally application. If the user asks about unrelated topics (such as coding/programming, cooking recipes, general knowledge, math puzzles, history, sports, translations, or general conversation outside of personal finance), politely decline to answer, explaining that as the Tally AI Financial Advisor, your expertise is strictly focused on helping them manage their personal finances.`;
 
     // Map history to OpenAI/Groq compatible structure
     const mappedMessages = chatHistory.map((msg) => ({

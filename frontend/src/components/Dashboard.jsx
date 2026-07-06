@@ -27,7 +27,7 @@ export const Dashboard = () => {
       <DesktopLayout state={state} />
       <MobileLayout state={state} />
 
-      {state.isScannerOpen && (
+      {state.isScannerOpen && window.innerWidth >= 768 && (
         <ReceiptScanner
           token={state.token}
           onClose={() => state.setIsScannerOpen(false)}

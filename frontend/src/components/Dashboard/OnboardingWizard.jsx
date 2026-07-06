@@ -36,14 +36,7 @@ export const OnboardingWizard = ({ state }) => {
     }
   };
 
-  const handleSkipOrFinish = async () => {
-    if (currentSlide === totalSlides - 1 && budgetVal.trim() !== '') {
-      // Set the budget
-      const parsedBudget = parseFloat(budgetVal);
-      if (!isNaN(parsedBudget) && parsedBudget >= 0) {
-        await handleUpdateBudget('Overall', parsedBudget);
-      }
-    }
+  const handleSkipOrFinish = () => {
     // Save onboarding completed in localStorage
     localStorage.setItem(`tally_onboarded_mobile_v1_${user?.id}`, 'true');
     setIsOnboardingOpen(false);
@@ -173,8 +166,8 @@ export const OnboardingWizard = ({ state }) => {
                     className="form-input simulator-input"
                     placeholder="e.g., spent 450 rs for dinner at pizza hut"
                     value={simulatorText}
-                    onChange={(e) => setSimulatorText(e.target.value)}
-                    disabled={isSimulating}
+                    readOnly
+                    style={{ opacity: 0.85, cursor: 'default' }}
                   />
                   <button
                     className="btn btn-primary simulator-btn"
@@ -259,36 +252,39 @@ export const OnboardingWizard = ({ state }) => {
             </div>
           )}
 
-          {/* SLIDE 4: Budget Setup */}
+          {/* SLIDE 4: Monthly Budget limits Mock Preview */}
           {currentSlide === 3 && (
             <div className="onboarding-slide fade-in">
               <div className="onboarding-icon-wrapper budget-icon">
                 <Wallet size={32} />
               </div>
-              <h2 className="onboarding-slide-title">Set Overall Budget</h2>
+              <h2 className="onboarding-slide-title">Monthly Limits & Budgets</h2>
               <p className="onboarding-slide-desc">
-                Let's set your overall target budget for this month. You can adjust this anytime under the profile view.
+                Set custom spending limits per category to manage your money. Here is a preview:
               </p>
 
-              <div className="budget-setup-box">
-                <label className="budget-setup-label">Target Monthly Budget (₹)</label>
-                <div className="budget-input-wrapper">
-                  <span className="budget-currency-symbol">₹</span>
-                  <input
-                    type="number"
-                    className="form-input budget-setup-input"
-                    placeholder="Enter limit e.g. 15000"
-                    value={budgetVal}
-                    onChange={(e) => setBudgetVal(e.target.value)}
-                  />
+              {/* Mock Budget Tracker Card preview */}
+              <div className="onboarding-budget-preview-card" style={{ width: '100%', background: 'rgba(255,255,255,0.03)', padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.75rem', textAlign: 'left' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: '500' }}>
+                  <span>Overall Monthly Limit</span>
+                  <span style={{ color: 'var(--text-primary)' }}>₹6,000 / ₹15,000</span>
                 </div>
-                <p className="budget-setup-tip">
-                  <Info size={14} style={{ marginRight: '4px' }} />
-                  Tally will alert you if your monthly total spending exceeds this limit.
-                </p>
+                <div style={{ height: '8px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '40%', height: '100%', background: 'var(--text-primary)' }} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'var(--text-muted)' }}>
+                  <span>40% spent (Looks good)</span>
+                  <span>₹9,000 remaining</span>
+                </div>
               </div>
+              
+              <p className="budget-setup-tip" style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'var(--text-muted)' }}>
+                <Info size={14} style={{ color: 'var(--text-secondary)' }} />
+                Set and adjust your own budgets anytime from the Profile section.
+              </p>
             </div>
           )}
+
         </div>
 
         {/* Footer controls */}
