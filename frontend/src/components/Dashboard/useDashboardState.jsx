@@ -134,25 +134,30 @@ export const useDashboardState = () => {
   const fetchDashboardData = async () => {
     if (!token) return;
     try {
-      // Fetch Expenses
-      const expensesRes = await fetch(`${API_URL}/expenses`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const expensesData = await expensesRes.json();
+      // Fetch Expenses, Savings Goals, and Budgets in parallel
+      const [expensesRes, savingsRes, budgetsRes] = await Promise.all([
+        fetch(`${API_URL}/expenses`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(`${API_URL}/savings`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(`${API_URL}/budgets?month=${selectedMonth}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      ]);
+
+      // Parse all JSON responses in parallel
+      const [expensesData, savingsData, budgetsData] = await Promise.all([
+        expensesRes.json(),
+        savingsRes.json(),
+        budgetsRes.json()
+      ]);
+
+      // Batch state updates so React renders them together
       if (expensesRes.ok) setExpenses(expensesData);
-
-      // Fetch Savings Goals
-      const savingsRes = await fetch(`${API_URL}/savings`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const savingsData = await savingsRes.json();
       if (savingsRes.ok) setSavingsGoals(savingsData);
-
-      // Fetch Budgets for selected month
-      const budgetsRes = await fetch(`${API_URL}/budgets?month=${selectedMonth}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const budgetsData = await budgetsRes.json();
+      
       if (budgetsRes.ok) {
         setBudgets(budgetsData);
         // Pre-fill budget input state
