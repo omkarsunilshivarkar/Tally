@@ -127,6 +127,8 @@ export const useDashboardState = () => {
 
   // Mobile Views state: 'home' | 'analytics' | 'profile' | 'history'
   const [activeMobileView, setActiveMobileView] = useState('home');
+  // Desktop Views state: 'home' | 'history' | 'budgets' | 'savings'
+  const [activeDesktopView, setActiveDesktopView] = useState('home');
   // Mobile Timeframe: always Weekly view by default
   const [timeframe, setTimeframe] = useState('Weekly');
   const [historySearch, setHistorySearch] = useState('');
@@ -580,6 +582,8 @@ export const useDashboardState = () => {
     setEditingBudget,
     activeMobileView,
     setActiveMobileView,
+    activeDesktopView,
+    setActiveDesktopView,
     timeframe,
     setTimeframe,
     historySearch,

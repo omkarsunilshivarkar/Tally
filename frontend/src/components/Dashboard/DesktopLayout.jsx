@@ -54,6 +54,9 @@ export const DesktopLayout = ({ state }) => {
     filteredTotalSpending,
     filteredTopCategory,
     filteredDonutData,
+    activeDesktopView,
+    setActiveDesktopView,
+    setIsOnboardingOpen,
   } = state;
 
   return (
@@ -65,61 +68,13 @@ export const DesktopLayout = ({ state }) => {
         setIsChatOpen={setIsChatOpen}
         theme={theme}
         toggleTheme={toggleTheme}
+        activeDesktopView={activeDesktopView}
+        setActiveDesktopView={setActiveDesktopView}
+        setIsOnboardingOpen={setIsOnboardingOpen}
       />
 
-      {/* Main Content Dashboard */}
+      {/* Main Content Area */}
       <main className="main-content">
-        {/* Top Header */}
-        <header className="desktop-header">
-          <div>
-            <h2 className="desktop-header-title">
-              Welcome back, <span className="gradient-text">{user?.name}</span>
-            </h2>
-            <p className="desktop-header-subtitle">Here is your financial workspace snapshot.</p>
-          </div>
-
-          <div className="desktop-header-actions">
-            {/* Timeframe Selector Button Group */}
-            <div className="desktop-timeframe-picker" style={{ display: 'flex', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
-              {['Daily', 'Weekly', 'Monthly'].map((tf) => (
-                <button
-                  key={tf}
-                  className={`btn ${timeframe === tf ? 'btn-primary' : 'btn-secondary'}`}
-                  onClick={() => setTimeframe(tf)}
-                  style={{
-                    padding: '0.45rem 1rem',
-                    fontSize: '0.82rem',
-                    border: 'none',
-                    borderRadius: '0',
-                    boxShadow: 'none',
-                    background: timeframe === tf ? 'var(--text-primary)' : 'transparent',
-                    color: timeframe === tf ? 'var(--bg-color)' : 'var(--text-secondary)',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {tf}
-                </button>
-              ))}
-            </div>
-
-            {/* Conditional Month Picker */}
-            {timeframe === 'Monthly' && (
-              <input
-                type="month"
-                className="form-input desktop-month-picker"
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                style={{ width: '135px', padding: '0.45rem', fontSize: '0.85rem' }}
-              />
-            )}
-
-            <button className="btn btn-secondary desktop-chat-advisor-btn" onClick={() => setIsChatOpen(true)}>
-              <Bot size={16} color="white" /> Chat Advisor
-            </button>
-          </div>
-        </header>
-
         {error && (
           <div className="error-banner">
             <AlertTriangle size={18} className="error-banner-icon" />
@@ -127,83 +82,177 @@ export const DesktopLayout = ({ state }) => {
           </div>
         )}
 
-        {/* Metrics Cards */}
-        <MetricCards
-          totalSpending={filteredTotalSpending}
-          totalBudget={totalBudget}
-          remainingBudget={totalBudget - filteredTotalSpending}
-          topCategory={filteredTopCategory}
-        />
-
-        {/* Quick Log Sparkle Bar */}
-        <section className="desktop-quick-log-section">
-          <form onSubmit={handleQuickLog} className="ai-log-container">
-            <Brain className="ai-log-sparkle" size={20} />
-            <input
-              type="text"
-              className="ai-log-input"
-              placeholder="AI Command Bar: type 'spent ₹250 at McDonalds today' to log instantly..."
-              value={quickLogText}
-              onChange={(e) => setQuickLogText(e.target.value)}
-              disabled={quickLogLoading}
-            />
-            {quickLogLoading && (
-              <div className="ai-log-loading-wrapper">
-                <Loader2 size={18} className="ai-log-sparkle spin-loader" />
+        {/* 1. Dashboard / Overview Page */}
+        {activeDesktopView === 'home' && (
+          <>
+            <header className="desktop-header">
+              <div>
+                <h2 className="desktop-header-title">
+                  Welcome back, <span className="gradient-text">{user?.name}</span>
+                </h2>
+                <p className="desktop-header-subtitle">Here is your financial workspace snapshot.</p>
               </div>
-            )}
-          </form>
-        </section>
 
-        <section className="desktop-charts-grid">
-          <SpendingTrendChart currentMonthExpenses={currentFilteredExpenses} timeframe={timeframe} selectedMonth={selectedMonth} />
-          <CategoryDonutChart donutData={filteredDonutData} totalSpending={filteredTotalSpending} chartColors={chartColors} />
-        </section>
+              <div className="desktop-header-actions">
+                <button className="btn btn-secondary desktop-chat-advisor-btn" onClick={() => setIsChatOpen(true)}>
+                  <Bot size={16} /> Chat Advisor
+                </button>
+              </div>
+            </header>
 
-        {/* Lower Content: Expenses Log & Budgets Setup */}
-        <section className="lower-content-grid">
-          {/* Transaction Logging & List */}
-          <div className="glass-card">
-            <div className="transaction-list-header">
-              <h4 className="tx-list-title">Transactions Log</h4>
-              <span className="tx-list-count">{currentFilteredExpenses.length} transactions</span>
+            <MetricCards
+              totalSpending={filteredTotalSpending}
+              totalBudget={totalBudget}
+              remainingBudget={totalBudget - filteredTotalSpending}
+              topCategory={filteredTopCategory}
+            />
+
+            <section className="desktop-quick-log-section">
+              <form onSubmit={handleQuickLog} className="ai-log-container">
+                <Brain className="ai-log-sparkle" size={20} />
+                <input
+                  type="text"
+                  className="ai-log-input"
+                  placeholder="AI Command Bar: type 'spent ₹250 at McDonalds today' to log instantly..."
+                  value={quickLogText}
+                  onChange={(e) => setQuickLogText(e.target.value)}
+                  disabled={quickLogLoading}
+                />
+                {quickLogLoading && (
+                  <div className="ai-log-loading-wrapper">
+                    <Loader2 size={18} className="ai-log-sparkle spin-loader" />
+                  </div>
+                )}
+              </form>
+            </section>
+
+            <section className="desktop-charts-grid">
+              <SpendingTrendChart currentMonthExpenses={currentFilteredExpenses} timeframe={timeframe} selectedMonth={selectedMonth} />
+              <CategoryDonutChart donutData={filteredDonutData} totalSpending={filteredTotalSpending} chartColors={chartColors} />
+            </section>
+          </>
+        )}
+
+        {/* 2. Transactions Log Page */}
+        {activeDesktopView === 'history' && (
+          <>
+            <header className="desktop-header">
+              <div>
+                <h2 className="desktop-header-title">Transaction History</h2>
+                <p className="desktop-header-subtitle">Log new expenses and review your past activity.</p>
+              </div>
+              <div className="desktop-header-actions">
+                <input
+                  type="month"
+                  className="form-input desktop-month-picker"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                />
+                <button className="btn btn-secondary desktop-chat-advisor-btn" onClick={() => setIsChatOpen(true)}>
+                  <Bot size={16} /> Chat Advisor
+                </button>
+              </div>
+            </header>
+
+            <section className="desktop-quick-log-section">
+              <form onSubmit={handleQuickLog} className="ai-log-container">
+                <Brain className="ai-log-sparkle" size={20} />
+                <input
+                  type="text"
+                  className="ai-log-input"
+                  placeholder="AI Command Bar: type 'spent ₹250 at McDonalds today' to log instantly..."
+                  value={quickLogText}
+                  onChange={(e) => setQuickLogText(e.target.value)}
+                  disabled={quickLogLoading}
+                />
+                {quickLogLoading && (
+                  <div className="ai-log-loading-wrapper">
+                    <Loader2 size={18} className="ai-log-sparkle spin-loader" />
+                  </div>
+                )}
+              </form>
+            </section>
+
+            <div className="glass-card">
+              <div className="transaction-list-header">
+                <h4 className="tx-list-title">Log Transactions</h4>
+                <span className="tx-list-count">{currentFilteredExpenses.length} transactions this month</span>
+              </div>
+
+              <TransactionForm
+                manualForm={manualForm}
+                setManualForm={setManualForm}
+                CATEGORIES={CATEGORIES}
+                handleManualSubmit={handleManualSubmit}
+              />
+
+              <TransactionTable
+                currentMonthExpenses={currentFilteredExpenses}
+                getBadgeClass={getBadgeClass}
+                handleDeleteExpense={handleDeleteExpense}
+              />
             </div>
+          </>
+        )}
 
-            <TransactionForm
-              manualForm={manualForm}
-              setManualForm={setManualForm}
+        {/* 3. Budgets Tracker Page */}
+        {activeDesktopView === 'budgets' && (
+          <>
+            <header className="desktop-header">
+              <div>
+                <h2 className="desktop-header-title">Budgets Tracker</h2>
+                <p className="desktop-header-subtitle">Set monthly budget limits for categories and track your adherence.</p>
+              </div>
+              <div className="desktop-header-actions">
+                <input
+                  type="month"
+                  className="form-input desktop-month-picker"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                />
+                <button className="btn btn-secondary desktop-chat-advisor-btn" onClick={() => setIsChatOpen(true)}>
+                  <Bot size={16} /> Chat Advisor
+                </button>
+              </div>
+            </header>
+
+            <BudgetSettings
               CATEGORIES={CATEGORIES}
-              handleManualSubmit={handleManualSubmit}
+              budgets={budgets}
+              categorySpending={categorySpending}
+              editingBudget={editingBudget}
+              setEditingBudget={setEditingBudget}
+              handleUpdateBudget={handleUpdateBudget}
+              totalSpending={totalSpending}
+              overallBudgetMatch={overallBudgetMatch}
             />
+          </>
+        )}
 
-            <TransactionTable
-              currentMonthExpenses={currentFilteredExpenses}
-              getBadgeClass={getBadgeClass}
-              handleDeleteExpense={handleDeleteExpense}
+        {/* 4. Savings Vault Page */}
+        {activeDesktopView === 'savings' && (
+          <>
+            <header className="desktop-header">
+              <div>
+                <h2 className="desktop-header-title">Savings Vault</h2>
+                <p className="desktop-header-subtitle">Manage your long-term savings goals and fund vaults.</p>
+              </div>
+              <div className="desktop-header-actions">
+                <button className="btn btn-secondary desktop-chat-advisor-btn" onClick={() => setIsChatOpen(true)}>
+                  <Bot size={16} /> Chat Advisor
+                </button>
+              </div>
+            </header>
+
+            <SavingsVault
+              savingsGoals={savingsGoals}
+              totalVaultBalance={totalVaultBalance}
+              handleCreateGoal={handleCreateGoal}
+              handleUpdateGoalFunding={handleUpdateGoalFunding}
+              handleDeleteGoal={handleDeleteGoal}
             />
-          </div>
-
-          {/* Budgets Tracker panel */}
-          <BudgetSettings
-            CATEGORIES={CATEGORIES}
-            budgets={budgets}
-            categorySpending={categorySpending}
-            editingBudget={editingBudget}
-            setEditingBudget={setEditingBudget}
-            handleUpdateBudget={handleUpdateBudget}
-            totalSpending={totalSpending}
-            overallBudgetMatch={overallBudgetMatch}
-          />
-        </section>
-
-        {/* Savings Vault Section */}
-        <SavingsVault
-          savingsGoals={savingsGoals}
-          totalVaultBalance={totalVaultBalance}
-          handleCreateGoal={handleCreateGoal}
-          handleUpdateGoalFunding={handleUpdateGoalFunding}
-          handleDeleteGoal={handleDeleteGoal}
-        />
+          </>
+        )}
       </main>
     </div>
   );

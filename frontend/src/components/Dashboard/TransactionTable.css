@@ -50,6 +50,8 @@ tr:hover td {
 }
 
 .tx-table-amount {
+  font-size: 0.95rem;
+  letter-spacing: 1px;
   font-weight: bold;
   color: var(--text-primary);
 }

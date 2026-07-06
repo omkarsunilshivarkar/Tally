@@ -33,8 +33,13 @@
   font-size: 0.9rem;
 }
 
+.vault-balance-badge strong {
+  letter-spacing: 1px;
+}
+
 .vault-balance-icon {
-  color: #34d399; /* Emerald Green */
+  color: #34d399;
+  /* Emerald Green */
 }
 
 /* Creation Toggle */
@@ -63,6 +68,10 @@
   gap: 0.75rem;
 }
 
+.new-goal-form-inline .form-group {
+  margin: 0;
+}
+
 .form-grid-3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -76,12 +85,25 @@
   align-items: center;
 }
 
+.new-goal-form-inline .form-input,
 .btn-submit-goal {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 1.2rem;
+  height: 38px;
+  box-sizing: border-box;
   font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+}
+
+.new-goal-form-inline .form-input {
+  padding: 0 0.75rem;
+}
+
+.btn-submit-goal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0 1.5rem;
+  cursor: pointer;
 }
 
 /* Goals list */
@@ -167,7 +189,7 @@
 
 .goal-progress-bar-container {
   height: 6px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--btn-secondary-bg);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -180,10 +202,12 @@
 }
 
 .goal-progress-bar-fill.completed {
-  background: #34d399; /* Completed Emerald Green */
+  background: #34d399;
+  /* Completed Emerald Green */
 }
 
 .goal-progress-bar-labels {
+  margin-top: 8px;
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
@@ -192,6 +216,8 @@
 
 .goal-progress-amounts {
   color: var(--text-muted);
+  font-size: 1.00rem;
+  letter-spacing: 1px;
 }
 
 .goal-progress-slash {
@@ -202,6 +228,7 @@
 .goal-progress-percentage {
   color: var(--text-primary);
   font-weight: bold;
+  font-size: 1.05rem;
 }
 
 /* Card Funding Controls */

@@ -1,42 +1,139 @@
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+.desktop-metrics-card {
+  padding: 1.75rem 2rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-.metric-card {
+.desktop-metrics-stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.desktop-metric-stat-item {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
+  flex: 1;
+  min-width: 200px;
 }
 
-.metric-icon-wrapper {
-  width: 50px;
-  height: 50px;
+.desktop-metric-icon-box {
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-md);
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.metric-card-icon {
-  background: var(--btn-secondary-bg);
   color: var(--text-primary);
 }
 
-.metric-card-label {
+.desktop-metric-label {
+  font-size: 0.8rem;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--font-subtext) !important;
+  font-weight: 500 !important;
 }
 
-.metric-card-val {
-  font-size: 1.75rem;
+.desktop-metric-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 0.15rem;
 }
 
-.metric-card-top-val {
-  font-size: 1.35rem;
+.desktop-metric-top-cat {
+  font-size: 1.25rem;
+  font-weight: 500;
+  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.desktop-metric-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border-color);
+}
+
+/* Progress bar section */
+.desktop-metrics-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.desktop-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.desktop-progress-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.desktop-progress-numbers {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+.desktop-progress-numbers strong {
+  color: var(--text-primary);
+}
+
+.desktop-progress-divider {
+  color: var(--text-muted);
+  margin: 0 0.15rem;
+}
+
+.desktop-progress-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--btn-secondary-bg);
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.desktop-progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.desktop-progress-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.90rem;
+  color: var(--text-muted);
+}
+
+.desktop-progress-status-text {
+  font-weight: 500;
+}
+
+.text-danger {
+  color: #ff4d4d;
+}
+
+/* Responsive adjustment if cards fold */
+@media (max-width: 900px) {
+  .desktop-metric-divider {
+    display: none;
+  }
 }

@@ -105,8 +105,14 @@ export const OnboardingWizard = ({ state }) => {
         {/* Header bar */}
         <div className="onboarding-header">
           <div className="onboarding-logo-area">
-            <Sparkles className="onboarding-sparkle-logo" size={20} />
-            <span className="onboarding-logo-text">Tally.</span>
+            <img
+              src="/icon-512.png"
+              alt="Tally Logo"
+              width={24}
+              height={24}
+              style={{ borderRadius: '6px', objectFit: 'cover', border: '1px solid var(--border-color)' }}
+            />
+            <span className="onboarding-logo-text">Tally</span>
           </div>
           <button className="onboarding-skip-btn" onClick={handleSkipOrFinish}>
             {currentSlide === totalSlides - 1 ? 'Skip Setup' : 'Skip'}
@@ -118,15 +124,19 @@ export const OnboardingWizard = ({ state }) => {
           {/* SLIDE 1: Welcome */}
           {currentSlide === 0 && (
             <div className="onboarding-slide fade-in">
-              <div className="onboarding-icon-wrapper welcome-icon">
-                <Smartphone size={36} />
+              <div className="onboarding-slide-header-horizontal">
+                <div className="onboarding-icon-wrapper-small welcome-icon">
+                  <Smartphone size={24} />
+                </div>
+                <div className="onboarding-slide-title-group">
+                  <h2 className="onboarding-slide-title-compact">
+                    Welcome to <span className="gradient-text">Tally</span>
+                  </h2>
+                  <p className="onboarding-slide-desc-compact">
+                    Your AI-Powered Personal Financial Assistant. Keep track of budgets, goals, and logs automatically.
+                  </p>
+                </div>
               </div>
-              <h2 className="onboarding-slide-title">
-                Welcome to <span className="gradient-text">Tally</span>
-              </h2>
-              <p className="onboarding-slide-desc">
-                Your AI-Powered Personal Financial Assistant. Keep track of budgets, goals, and logs automatically.
-              </p>
               
               <div className="onboarding-features-list">
                 <div className="onboarding-feature-item">
@@ -150,13 +160,17 @@ export const OnboardingWizard = ({ state }) => {
           {/* SLIDE 2: AI Input Simulator */}
           {currentSlide === 1 && (
             <div className="onboarding-slide fade-in">
-              <div className="onboarding-icon-wrapper info-icon">
-                <Brain size={32} />
+              <div className="onboarding-slide-header-horizontal">
+                <div className="onboarding-icon-wrapper-small info-icon">
+                  <Brain size={24} />
+                </div>
+                <div className="onboarding-slide-title-group">
+                  <h2 className="onboarding-slide-title-compact">AI Command Bar</h2>
+                  <p className="onboarding-slide-desc-compact">
+                    No complex forms needed. Just type how you spent your money. Try the simulator below:
+                  </p>
+                </div>
               </div>
-              <h2 className="onboarding-slide-title">AI Command Bar</h2>
-              <p className="onboarding-slide-desc">
-                No complex forms needed. Just type how you spent your money. Try the simulator below:
-              </p>
 
               {/* Interactive Simulator UI */}
               <div className="onboarding-simulator">
@@ -225,13 +239,17 @@ export const OnboardingWizard = ({ state }) => {
           {/* SLIDE 3: Advisor and Savings Goals Info */}
           {currentSlide === 2 && (
             <div className="onboarding-slide fade-in">
-              <div className="onboarding-icon-wrapper advisor-icon">
-                <Bot size={32} />
+              <div className="onboarding-slide-header-horizontal">
+                <div className="onboarding-icon-wrapper-small advisor-icon">
+                  <Bot size={24} />
+                </div>
+                <div className="onboarding-slide-title-group">
+                  <h2 className="onboarding-slide-title-compact">Advisor & Savings Vaults</h2>
+                  <p className="onboarding-slide-desc-compact">
+                    Tally helps you optimize your spending and track long-term goals.
+                  </p>
+                </div>
               </div>
-              <h2 className="onboarding-slide-title">Advisor & Savings Vaults</h2>
-              <p className="onboarding-slide-desc">
-                Tally helps you optimize your spending and track long-term goals.
-              </p>
 
               <div className="dashboard-help-cards">
                 <div className="help-sub-card">
@@ -255,13 +273,17 @@ export const OnboardingWizard = ({ state }) => {
           {/* SLIDE 4: Monthly Budget limits Mock Preview */}
           {currentSlide === 3 && (
             <div className="onboarding-slide fade-in">
-              <div className="onboarding-icon-wrapper budget-icon">
-                <Wallet size={32} />
+              <div className="onboarding-slide-header-horizontal">
+                <div className="onboarding-icon-wrapper-small budget-icon">
+                  <Wallet size={24} />
+                </div>
+                <div className="onboarding-slide-title-group">
+                  <h2 className="onboarding-slide-title-compact">Monthly Limits & Budgets</h2>
+                  <p className="onboarding-slide-desc-compact">
+                    Set custom spending limits per category to manage your money. Here is a preview:
+                  </p>
+                </div>
               </div>
-              <h2 className="onboarding-slide-title">Monthly Limits & Budgets</h2>
-              <p className="onboarding-slide-desc">
-                Set custom spending limits per category to manage your money. Here is a preview:
-              </p>
 
               {/* Mock Budget Tracker Card preview */}
               <div className="onboarding-budget-preview-card" style={{ width: '100%', background: 'rgba(255,255,255,0.03)', padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.75rem', textAlign: 'left' }}>

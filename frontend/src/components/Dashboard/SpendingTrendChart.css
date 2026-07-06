@@ -37,6 +37,7 @@
 }
 
 .trend-stat-label {
+  margin-bottom: 4px;
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -123,15 +124,16 @@
 }
 
 .mobile-card-override .chart-trend-container {
-  height: 180px; /* slightly shorter on mobile */
+  height: 180px;
+  /* slightly shorter on mobile */
 }
 
 @media (max-width: 480px) {
   .trend-stats-summary {
     gap: 0.75rem;
   }
+
   .trend-stat-value {
     font-size: 0.9rem;
   }
 }
-

@@ -1,6 +1,6 @@
 .budget-tracker-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.25rem;
 }
 
@@ -86,4 +86,10 @@
   height: 100%;
   border-radius: 9999px;
   transition: width 0.5s ease-out;
+}
+
+.budget-item-value,
+.budget-overall-value {
+  font-size: 1.05rem;
+  letter-spacing: 1px;
 }
