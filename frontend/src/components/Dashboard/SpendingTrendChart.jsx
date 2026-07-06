@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TrendingUp } from 'lucide-react';
 import './SpendingTrendChart.css';
 
@@ -8,8 +8,6 @@ export const SpendingTrendChart = ({
   selectedMonth,
   isMobile = false,
 }) => {
-  const [activeIdx, setActiveIdx] = useState(null);
-
   if (!currentMonthExpenses || currentMonthExpenses.length === 0) {
     return (
       <div className="glass-card trend-chart-card">
@@ -103,8 +101,8 @@ export const SpendingTrendChart = ({
 
   const getCoords = (idx) => {
     const totalPoints = chartData.length;
-    const x = totalPoints > 1 ? 45 + (idx / (totalPoints - 1)) * 435 : 260;
-    const y = 170 - (chartData[idx].amount / maxAmt) * 140; // baseline y=170, max height 140px (y=30)
+    const x = totalPoints > 1 ? 55 + (idx / (totalPoints - 1)) * 420 : 260;
+    const y = 170 - (chartData[idx].amount / maxAmt) * 115; // baseline y=170, max height 115px (y=55) to leave room for big text at top
     return { x, y };
   };
 
@@ -120,37 +118,6 @@ export const SpendingTrendChart = ({
     }
     dGradPath = `${dPath} L ${points[points.length - 1].x} 170 L ${points[0].x} 170 Z`;
   }
-
-  // Mouse Move snaper logic
-  const handleMouseMove = (e) => {
-    if (points.length === 0) return;
-    const svg = e.currentTarget;
-    const rect = svg.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const mouseX = clientX - rect.left;
-    const mouseXInSvg = (mouseX / rect.width) * 500;
-
-    let closestIdx = 0;
-    let minDiff = Infinity;
-    points.forEach((p, idx) => {
-      const diff = Math.abs(p.x - mouseXInSvg);
-      if (diff < minDiff) {
-        minDiff = diff;
-        closestIdx = idx;
-      }
-    });
-    setActiveIdx(closestIdx);
-  };
-
-  const handleMouseLeave = () => {
-    setActiveIdx(null);
-  };
-
-  // Determine active index to display details for
-  // If not hovered, display the latest logged point details by default
-  const activePointIdx = activeIdx !== null ? activeIdx : (chartData.length > 0 ? chartData.length - 1 : null);
-  const activePoint = activePointIdx !== null ? points[activePointIdx] : null;
-  const activeData = activePointIdx !== null ? chartData[activePointIdx] : null;
 
   // Stats Computations
   const totalSpent = currentMonthExpenses.reduce((sum, exp) => sum + exp.amount, 0);
@@ -211,49 +178,12 @@ export const SpendingTrendChart = ({
       </div>
 
       <div className="chart-trend-container">
-        {/* Absolute Tooltip Overlay */}
-        {activeData && activePoint && (
-          <div
-            className="trend-chart-tooltip"
-            style={{
-              left: `${(activePoint.x / 500) * 100}%`,
-              top: `${(activePoint.y / 200) * 100}%`,
-              transform: 'translate(-50%, -125%)',
-            }}
-          >
-            <div className="tooltip-date">{activeData.fullLabel}</div>
-            <div className="tooltip-amount">
-              ₹{activeData.amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-            {activeData.expenses && activeData.expenses.length > 0 && (
-              <div className="tooltip-expenses-list">
-                {activeData.expenses.slice(0, 3).map((exp, i) => (
-                  <div key={i} className="tooltip-expense-item">
-                    <span className="tooltip-expense-desc">{exp.description || exp.category}</span>
-                    <span className="tooltip-expense-val">₹{exp.amount.toFixed(0)}</span>
-                  </div>
-                ))}
-                {activeData.expenses.length > 3 && (
-                  <div className="tooltip-expense-more">
-                    + {activeData.expenses.length - 3} more items
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
         {/* SVG Drawing Area */}
         <svg
           width="100%"
           height="100%"
           viewBox="0 0 500 200"
           className="trend-chart-svg"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          onTouchMove={handleMouseMove}
-          onTouchStart={handleMouseMove}
-          onTouchEnd={handleMouseLeave}
         >
           <defs>
             <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
@@ -264,20 +194,20 @@ export const SpendingTrendChart = ({
 
           {/* Y-Axis Labels & Grid Lines */}
           <g className="grid-lines">
-            <text x="35" y="33" textAnchor="end" fill="var(--text-muted)" fontSize="8" fontWeight="500">
+            <text x="48" y="60" textAnchor="end" fill="var(--text-muted)" fontSize="16" fontWeight="700">
               ₹{maxAmt.toFixed(0)}
             </text>
-            <line x1="42" y1="30" x2="480" y2="30" stroke="var(--border-color)" strokeDasharray="3" />
+            <line x1="55" y1="55" x2="480" y2="55" stroke="var(--border-color)" strokeDasharray="3" />
 
-            <text x="35" y="103" textAnchor="end" fill="var(--text-muted)" fontSize="8" fontWeight="500">
+            <text x="48" y="117.5" textAnchor="end" fill="var(--text-muted)" fontSize="16" fontWeight="700">
               ₹{(maxAmt / 2).toFixed(0)}
             </text>
-            <line x1="42" y1="100" x2="480" y2="100" stroke="var(--border-color)" strokeDasharray="3" />
+            <line x1="55" y1="112.5" x2="480" y2="112.5" stroke="var(--border-color)" strokeDasharray="3" />
 
-            <text x="35" y="173" textAnchor="end" fill="var(--text-muted)" fontSize="8" fontWeight="500">
+            <text x="48" y="175" textAnchor="end" fill="var(--text-muted)" fontSize="16" fontWeight="700">
               ₹0
             </text>
-            <line x1="42" y1="170" x2="480" y2="170" stroke="var(--border-color)" />
+            <line x1="55" y1="170" x2="480" y2="170" stroke="var(--border-color)" />
           </g>
 
           {/* Area Fill Gradient */}
@@ -308,23 +238,39 @@ export const SpendingTrendChart = ({
             />
           )}
 
-          {/* Snapping Interactive vertical guide line & point */}
-          {activePoint && (
-            <g className="snapping-guide">
-              <line
-                x1={activePoint.x}
-                y1="30"
-                x2={activePoint.x}
-                y2="170"
-                stroke="var(--text-primary)"
-                strokeDasharray="4 4"
-                opacity="0.35"
-                strokeWidth="1.5"
-              />
-              <circle cx={activePoint.x} cy={activePoint.y} r="8" fill="var(--text-primary)" opacity="0.15" />
-              <circle cx={activePoint.x} cy={activePoint.y} r="4.5" fill="var(--text-primary)" stroke="var(--bg-color)" strokeWidth="1.5" />
-            </g>
-          )}
+          {/* Render circular dots & amount values above peaks/spending days */}
+          {points.map((p, idx) => {
+            const d = chartData[idx];
+            if (d.amount === 0) return null;
+
+            // Spacing check: render text label if sparse or significant
+            const showValueText = chartData.length <= 8 || idx % 2 === 0 || d.amount > (maxAmt * 0.2);
+
+            return (
+              <g key={idx}>
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r="4"
+                  fill="var(--text-primary)"
+                  stroke="var(--bg-color)"
+                  strokeWidth="1.5"
+                />
+                {showValueText && (
+                  <text
+                    x={p.x}
+                    y={p.y - 18}
+                    textAnchor="middle"
+                    fill="var(--text-primary)"
+                    fontSize="20"
+                    fontWeight="800"
+                  >
+                    ₹{d.amount.toFixed(0)}
+                  </text>
+                )}
+              </g>
+            );
+          })}
 
           {/* X-Axis labels at clean spacing */}
           <g className="x-axis-labels">
@@ -335,11 +281,11 @@ export const SpendingTrendChart = ({
                 <text
                   key={idx}
                   x={p.x}
-                  y="186"
+                  y="194"
                   textAnchor="middle"
                   fill="var(--text-muted)"
-                  fontSize="8"
-                  fontWeight="500"
+                  fontSize="16"
+                  fontWeight="700"
                 >
                   {d.label}
                 </text>
