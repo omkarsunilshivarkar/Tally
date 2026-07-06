@@ -2,6 +2,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthPages } from './components/AuthPages';
 import { Dashboard } from './components/Dashboard';
 import { Loader2 } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 const TallyLogo = ({ size = 64, className = '' }) => (
   <svg
@@ -138,6 +139,7 @@ function App() {
   return (
     <AuthProvider>
       <AppContent />
+      <Analytics />
     </AuthProvider>
   );
 }
