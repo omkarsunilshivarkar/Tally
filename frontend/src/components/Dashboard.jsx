@@ -11,6 +11,17 @@ import './Dashboard.css';
 export const Dashboard = () => {
   const state = useDashboardState();
 
+  if (state.loading) {
+    return (
+      <div className="dashboard-loading-screen">
+        <div className="loading-content">
+          <div className="loader-spinner"></div>
+          <p className="loading-text">Tallying up your expenses...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-root">
       <DesktopLayout state={state} />

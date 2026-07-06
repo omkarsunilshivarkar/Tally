@@ -70,6 +70,7 @@ export const useDashboardState = () => {
   const [expenses, setExpenses] = useState([]);
   const [savingsGoals, setSavingsGoals] = useState([]);
   const [budgets, setBudgets] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
@@ -173,6 +174,8 @@ export const useDashboardState = () => {
     } catch (err) {
       console.error(err);
       setError('Could not connect to backend server. Verify it is running.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -553,6 +556,7 @@ export const useDashboardState = () => {
   const strokeDashoffset = circumference - (savingsPercent / 100) * circumference;
 
   return {
+    loading,
     token,
     user,
     logout,
