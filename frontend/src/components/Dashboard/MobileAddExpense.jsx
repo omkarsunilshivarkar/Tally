@@ -91,7 +91,7 @@ export const MobileAddExpense = ({
             <label className="form-label mobile-input-label">Date</label>
             <input
               type="date"
-              className="form-input mobile-input-compact"
+              className="form-input mobile-input-compact w-100"
               value={manualForm.date}
               onChange={(e) => setManualForm({ ...manualForm, date: e.target.value })}
               required
