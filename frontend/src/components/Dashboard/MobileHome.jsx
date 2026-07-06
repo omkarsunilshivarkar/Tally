@@ -30,7 +30,7 @@ export const MobileHome = ({
   const [newGoal, setNewGoal] = useState({
     name: '',
     targetAmount: '',
-    currentAmount: '0',
+    currentAmount: '',
     targetDate: new Date().toISOString().split('T')[0]
   });
 
@@ -48,7 +48,7 @@ export const MobileHome = ({
     setNewGoal({
       name: '',
       targetAmount: '',
-      currentAmount: '0',
+      currentAmount: '',
       targetDate: new Date().toISOString().split('T')[0]
     });
     setIsFormOpen(false);

@@ -13,7 +13,7 @@ export const SavingsVault = ({
   const [newGoal, setNewGoal] = useState({
     name: '',
     targetAmount: '',
-    currentAmount: '0',
+    currentAmount: '',
     targetDate: new Date().toISOString().split('T')[0]
   });
 
@@ -33,7 +33,7 @@ export const SavingsVault = ({
     setNewGoal({
       name: '',
       targetAmount: '',
-      currentAmount: '0',
+      currentAmount: '',
       targetDate: new Date().toISOString().split('T')[0]
     });
     setIsFormOpen(false);
