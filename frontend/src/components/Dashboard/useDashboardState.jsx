@@ -67,10 +67,30 @@ export const getCategoryIcon = (cat) => {
 
 export const useDashboardState = () => {
   const { token, user, logout } = useAuth();
-  const [expenses, setExpenses] = useState([]);
-  const [savingsGoals, setSavingsGoals] = useState([]);
-  const [budgets, setBudgets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState(() => new Date().toISOString().slice(0, 7)); // YYYY-MM
+
+  // Helper to load cached data for current user
+  const getCached = (key, fallback) => {
+    if (!user?.id) return fallback;
+    try {
+      const data = localStorage.getItem(`tally_cache_${key}_${user.id}`);
+      return data ? JSON.parse(data) : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  };
+
+  const [expenses, setExpenses] = useState(() => getCached('expenses', []));
+  const [savingsGoals, setSavingsGoals] = useState(() => getCached('savings', []));
+  const [budgets, setBudgets] = useState(() => getCached(`budgets_${selectedMonth}`, []));
+  
+  // If we have cached data, don't show full-screen loader
+  const [loading, setLoading] = useState(() => {
+    if (!user?.id) return true;
+    const cachedExp = localStorage.getItem(`tally_cache_expenses_${user.id}`);
+    return !cachedExp;
+  });
+
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
@@ -95,7 +115,6 @@ export const useDashboardState = () => {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7)); // YYYY-MM
   const [error, setError] = useState(null);
   const [toasts, setToasts] = useState([]);
   const [confirmState, setConfirmState] = useState({
@@ -122,8 +141,20 @@ export const useDashboardState = () => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  // Helper to pre-fill budget input state
+  const populateEditingBudget = (budgetsData) => {
+    const initialBudgetInputs = {};
+    CATEGORIES.forEach((cat) => {
+      const match = budgetsData.find((b) => b.category === cat);
+      initialBudgetInputs[cat] = match ? match.limitAmount.toString() : '';
+    });
+    const overallMatch = budgetsData.find((b) => b.category === 'Overall');
+    initialBudgetInputs['Overall'] = overallMatch ? overallMatch.limitAmount.toString() : '';
+    return initialBudgetInputs;
+  };
+
   // Budget editing state
-  const [editingBudget, setEditingBudget] = useState({});
+  const [editingBudget, setEditingBudget] = useState(() => populateEditingBudget(budgets));
 
   // Mobile Views state: 'home' | 'analytics' | 'profile' | 'history'
   const [activeMobileView, setActiveMobileView] = useState('home');
@@ -137,7 +168,28 @@ export const useDashboardState = () => {
   const fetchDashboardData = async () => {
     if (!token) return;
     try {
-      // Fetch Expenses, Savings Goals, and Budgets in parallel
+      // 1. Attempt unified bootstrap request (1 network roundtrip)
+      const bootstrapRes = await fetch(`${API_URL}/dashboard/bootstrap?month=${selectedMonth}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (bootstrapRes.ok) {
+        const data = await bootstrapRes.json();
+        setExpenses(data.expenses || []);
+        setSavingsGoals(data.savingsGoals || []);
+        setBudgets(data.budgets || []);
+        setEditingBudget(populateEditingBudget(data.budgets || []));
+
+        // Save to cache for instant app launches
+        if (user?.id) {
+          localStorage.setItem(`tally_cache_expenses_${user.id}`, JSON.stringify(data.expenses || []));
+          localStorage.setItem(`tally_cache_savings_${user.id}`, JSON.stringify(data.savingsGoals || []));
+          localStorage.setItem(`tally_cache_budgets_${selectedMonth}_${user.id}`, JSON.stringify(data.budgets || []));
+        }
+        return;
+      }
+
+      // 2. Fallback to individual endpoints if bootstrap endpoint fails
       const [expensesRes, savingsRes, budgetsRes] = await Promise.all([
         fetch(`${API_URL}/expenses`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -150,28 +202,24 @@ export const useDashboardState = () => {
         })
       ]);
 
-      // Parse all JSON responses in parallel
       const [expensesData, savingsData, budgetsData] = await Promise.all([
         expensesRes.json(),
         savingsRes.json(),
         budgetsRes.json()
       ]);
 
-      // Batch state updates so React renders them together
-      if (expensesRes.ok) setExpenses(expensesData);
-      if (savingsRes.ok) setSavingsGoals(savingsData);
-      
+      if (expensesRes.ok) {
+        setExpenses(expensesData);
+        if (user?.id) localStorage.setItem(`tally_cache_expenses_${user.id}`, JSON.stringify(expensesData));
+      }
+      if (savingsRes.ok) {
+        setSavingsGoals(savingsData);
+        if (user?.id) localStorage.setItem(`tally_cache_savings_${user.id}`, JSON.stringify(savingsData));
+      }
       if (budgetsRes.ok) {
         setBudgets(budgetsData);
-        // Pre-fill budget input state
-        const initialBudgetInputs = {};
-        CATEGORIES.forEach((cat) => {
-          const match = budgetsData.find((b) => b.category === cat);
-          initialBudgetInputs[cat] = match ? match.limitAmount.toString() : '';
-        });
-        const overallMatch = budgetsData.find((b) => b.category === 'Overall');
-        initialBudgetInputs['Overall'] = overallMatch ? overallMatch.limitAmount.toString() : '';
-        setEditingBudget(initialBudgetInputs);
+        setEditingBudget(populateEditingBudget(budgetsData));
+        if (user?.id) localStorage.setItem(`tally_cache_budgets_${selectedMonth}_${user.id}`, JSON.stringify(budgetsData));
       }
     } catch (err) {
       console.error(err);

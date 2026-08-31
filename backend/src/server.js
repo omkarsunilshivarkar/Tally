@@ -6,6 +6,7 @@ import expensesRouter from './routes/expenses.js';
 import budgetsRouter from './routes/budgets.js';
 import chatbotRouter from './routes/chatbot.js';
 import savingsRouter from './routes/savings.js';
+import dashboardRouter from './routes/dashboard.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/expenses', expensesRouter);
 app.use('/api/budgets', budgetsRouter);
 app.use('/api/chatbot', chatbotRouter);
 app.use('/api/savings', savingsRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 // Basic status health check
 app.get('/health', (req, res) => {

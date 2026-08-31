@@ -7,9 +7,21 @@ export const API_URL =
   `${window.location.protocol}//${window.location.hostname}:5000/api`;
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(() => {
+    try {
+      const cached = localStorage.getItem('tally_user');
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [loading, setLoading] = useState(() => {
+    const t = localStorage.getItem('token');
+    const u = localStorage.getItem('tally_user');
+    // If we have both token and cached user, don't block UI with loading spinner
+    return Boolean(t && !u);
+  });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -28,7 +40,8 @@ export const AuthProvider = ({ children }) => {
         if (res.ok) {
           const userData = await res.json();
           setUser(userData);
-        } else {
+          localStorage.setItem('tally_user', JSON.stringify(userData));
+        } else if (res.status === 401 || res.status === 403) {
           // Token expired or invalid
           logout();
         }
@@ -58,6 +71,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem('token', data.token);
+    localStorage.setItem('tally_user', JSON.stringify(data.user));
     if (localStorage.getItem(`tally_onboarded_mobile_v1_${data.user.id}`) === null) {
       localStorage.setItem(`tally_onboarded_mobile_v1_${data.user.id}`, 'true');
     }
@@ -81,6 +95,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem('token', data.token);
+    localStorage.setItem('tally_user', JSON.stringify(data.user));
     localStorage.setItem(`tally_onboarded_mobile_v1_${data.user.id}`, 'false');
     setToken(data.token);
     setUser(data.user);
@@ -102,6 +117,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     localStorage.setItem('token', data.token);
+    localStorage.setItem('tally_user', JSON.stringify(data.user));
     if (localStorage.getItem(`tally_onboarded_mobile_v1_${data.user.id}`) === null) {
       localStorage.setItem(`tally_onboarded_mobile_v1_${data.user.id}`, 'true');
     }
@@ -111,6 +127,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('tally_user');
+    // Clear user dashboard caches
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('tally_cache_')) {
+        localStorage.removeItem(key);
+      }
+    });
     setToken(null);
     setUser(null);
   };
