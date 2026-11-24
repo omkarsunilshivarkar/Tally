@@ -1,0 +1,26 @@
+{
+  "name": "tally-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp expense tracking service",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.10",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.21.4"
+  }
+}

@@ -1,198 +1,222 @@
-# AI Expense Tracker (Tally)
+# Tally — WhatsApp Expense Tracker
 
-An intelligent, full-stack personal finance assistant that empowers users to track their spending, manage category budgets, and gain deep insights through artificial intelligence.
+A WhatsApp-powered personal finance service that lets you track spending, manage budgets, and set savings goals — all through chat. No app to download, no website to visit. Just message your bot on WhatsApp.
 
-The application features a responsive client interface (optimized for both desktop and mobile screens) and an Express-powered backend utilizing SQLite with Drizzle ORM and Groq's Vision & Language AI models.
-
----
-
-## 🚀 Key Features
-
-*   **Secure Authentication**: JWT-based user registration and login system with password hashing powered by `bcryptjs`.
-*   **Vision-Powered Receipt Scanner**: Upload or drag-and-drop receipt images to automatically extract transaction details (merchant, amount, category, date, and description) using Groq's Vision LLM (`llama-3.2-11b-vision-preview`).
-*   **Natural Language Quick-Logging**: Type a simple note (e.g., *"spent $14.50 on a coffee and muffin at Starbucks yesterday"*) and let the AI automatically structure and parse it.
-*   **Personalized AI Financial Advisor ("Tally")**: A context-aware chatbot that reviews your monthly budgets and transaction history to answer queries (e.g., *"How much did I spend on dining out this month?"*, *"Am I staying within my budget limits?"*) and suggest personalized money-saving advice.
-*   **Budget Management**: Set and update monthly category limits, with real-time remaining budget calculations.
-*   **Beautiful Financial Analytics**: Clean visual distribution charts (category donut charts) and historical spending curves (trend line charts) using native SVG graphs.
-*   **Dual-Layout Design**: A premium dark-mode responsive glassmorphic UI, with dedicated structures for desktop dashboard navigation and a bottom-bar mobile app layout.
+> Think of it like how banks let you check your balance on WhatsApp — but for expense tracking.
 
 ---
 
-## 📸 App Screenshots
+## ✨ Features
 
-Here are some screenshots showcasing the premium dark-mode dashboard interface, category budget configuration, and our AI financial advisor chat window:
-
-### 1. Main Dashboard
-![Dashboard Layout](./docs/screenshots/dashboard.png)
-
-### 2. Category Budget Configuration
-![Budget Config](./docs/screenshots/budget.png)
-
-### 3. Tally - AI Financial Chatbot Advisor
-![AI Chatbot Conversation](./docs/screenshots/chatbot.png)
+- **💬 Conversational Interface** — Interact entirely through WhatsApp text messages, interactive menus, and buttons
+- **➕ Log Expenses** — Step-by-step guided flow: amount → category → description → date → done
+- **📊 Spending Summaries** — Monthly breakdowns by category with percentages
+- **💳 Budget Management** — Set per-category monthly limits and track spending against them with progress bars
+- **🎯 Savings Goals** — Create targets, fund them incrementally, and watch your progress
+- **📋 Quick Commands** — Type `summary`, `recent`, `budget`, or `goals` for instant info
+- **🗑️ Delete Expenses** — Remove mistakes with a guided selection flow
+- **👤 Auto-Registration** — No sign-up needed. First message creates your account using your phone number
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
-### Frontend
-*   **Framework**: [React 19](https://react.dev/) + [Vite](https://vite.dev/)
-*   **Styling**: Custom modern Vanilla CSS with custom HSL CSS variables, smooth animations, glassmorphism, and transitions.
-*   **Icons**: [Lucide React](https://lucide.dev/)
-*   **Linter**: [Oxlint](https://oxc.rs/docs/guide/usage/linter/introduction.html)
-
-### Backend
-*   **Runtime**: [Node.js (ES Modules)](https://nodejs.org/)
-*   **Framework**: [Express](https://expressjs.com/)
-*   **Database ORM**: [Drizzle ORM](https://orm.drizzle.team/)
-*   **Database Engine**: SQLite / LibSQL client (local `local.db` file or Cloud Turso database connection)
-*   **AI Integration**: [Groq Cloud API Developer Platform](https://consolegroq.com/) (using Llama 3.2 Vision & Llama 3.3 Versatile models)
+- **Runtime:** Node.js (ES Modules)
+- **Framework:** Express
+- **Database:** SQLite via Drizzle ORM + libsql (Turso-ready for cloud deployment)
+- **Messaging:** WhatsApp Cloud API (Meta Graph API)
+- **Dependencies:** Just 4 production packages — zero bloat
 
 ---
 
-## 📂 Directory Structure
+## 📂 Project Structure
 
-```text
-AIExpenseTracker/
-├── backend/
-│   ├── src/
-│   │   ├── db/          # Database configuration and Drizzle schema definitions
-│   │   ├── middleware/  # JWT validation middleware
-│   │   ├── routes/      # REST API endpoints (auth, expenses, budgets, chatbot)
-│   │   ├── services/    # Groq AI vision, quick-log, and chatbot service layer
-│   │   └── server.js    # Express app startup and configuration
-│   ├── drizzle/         # Generated Drizzle SQL migration files
-│   ├── .env.example     # Template for environment variables
-│   ├── drizzle.config.js# Drizzle kit configuration file
-│   └── package.json
-│
-├── frontend/
-│   ├── public/          # Static assets & icons
-│   ├── src/
-│   │   ├── assets/      # Vite/React logos
-│   │   ├── components/  # Page-level components, tables, and charts
-│   │   │   └── Dashboard/ # Desktop layouts and mobile-specific components
-│   │   ├── context/     # React state providers (AuthContext)
-│   │   ├── App.jsx      # Main router and shell layout
-│   │   ├── main.jsx     # Root mount point
-│   │   ├── App.css      # Core application style definitions
-│   │   └── index.css    # Typography, HSL color variables, and global resetting
-│   ├── .oxlintrc.json   # Oxlint static analysis config
-│   ├── vite.config.js   # Vite bundle config
-│   └── package.json
-│
-└── README.md            # You are here!
+```
+Tally/
+├── src/
+│   ├── whatsapp/
+│   │   ├── client.js       # WhatsApp Cloud API wrapper (send messages)
+│   │   ├── webhook.js      # Webhook routes (GET verify + POST receive)
+│   │   ├── handler.js      # Message router & intent parser
+│   │   ├── flows.js        # Multi-step conversation state machine
+│   │   └── formatters.js   # Rich message builders (summaries, menus)
+│   ├── db/
+│   │   ├── index.js        # Database connection (Drizzle + libsql)
+│   │   └── schema.js       # Table definitions (users, expenses, budgets, goals)
+│   └── server.js           # Express app entry point
+├── drizzle/                 # Generated SQL migration files
+├── docs/
+│   └── WHATSAPP_SETUP.md   # Meta Business Account setup guide
+├── .env.example             # Environment variable template
+├── drizzle.config.js        # Drizzle Kit configuration
+├── package.json
+└── README.md
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Quick Start
 
-### Prerequisites
-*   [Node.js](https://nodejs.org/) (v18.0.0 or higher recommended)
-*   npm (installed with Node.js)
+### 1. Install Dependencies
 
-### 1. Set Up the Backend
+```bash
+npm install
+```
 
-1.  Navigate into the `backend` directory:
-    ```bash
-    cd backend
-    ```
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-3.  Configure your environment variables. Copy the example file:
-    ```bash
-    cp .env.example .env
-    ```
-4.  Open `.env` and fill in the values:
-    *   `PORT`: The port on which the server should listen (default: `5000`).
-    *   `JWT_SECRET`: A secure random string for signing login sessions.
-    *   `GROQ_API_KEY`: Your Groq API key from the [Groq Console](https://console.groq.com/).
-        > [!NOTE]
-        > If you leave `GROQ_API_KEY` blank, the application will run in **mock mode**. Receipt scanning, quick logging, and chatbot financial advice will return realistic mock data for local debugging.
-    *   `DATABASE_URL` / `DATABASE_AUTH_TOKEN`: (Optional) Leave blank to use a local development file (`local.db`), or specify a Turso URL for cloud SQLite sync.
+### 2. Configure Environment
 
-5.  Initialize your database and push the schema using Drizzle Kit:
-    ```bash
-    npm run db:push
-    ```
-6.  Start the development server:
-    ```bash
-    npm run dev
-    ```
-    The backend server will run on `http://localhost:5000` (or your custom PORT).
+```bash
+cp .env.example .env
+```
 
----
+Edit `.env` with your WhatsApp API credentials:
 
-### 2. Set Up the Frontend
+```env
+PORT=5000
+WHATSAPP_ACCESS_TOKEN=your_access_token
+WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
+WHATSAPP_BUSINESS_ACCOUNT_ID=your_business_account_id
+WEBHOOK_VERIFY_TOKEN=any_random_secret
+```
 
-1.  Open a new terminal session and navigate to the `frontend` directory:
-    ```bash
-    cd frontend
-    ```
-2.  Install client-side dependencies:
-    ```bash
-    npm install
-    ```
-3.  (Optional) Create a `.env` file in the frontend folder if you want to connect to a different backend server:
-    ```env
-    VITE_API_URL=http://localhost:5000/api
-    ```
-    *(By default, it will fall back to `http://localhost:5000/api` if no environment variable is set).*
-4.  Start the Vite local development server:
-    ```bash
-    npm run dev
-    ```
-5.  Open your browser and navigate to the URL shown in the terminal (typically `http://localhost:5173`).
+> Don't have WhatsApp API credentials yet? Follow the [WhatsApp Setup Guide](docs/WHATSAPP_SETUP.md).
+
+### 3. Initialize Database
+
+```bash
+npm run db:push
+```
+
+### 4. Start the Server
+
+```bash
+npm run dev
+```
+
+### 5. Expose with ngrok (for local development)
+
+```bash
+ngrok http 5000
+```
+
+Then configure the webhook URL in [Meta's dashboard](https://developers.facebook.com/) → WhatsApp → Configuration.
 
 ---
 
-## 🗄️ Database Management (Drizzle)
+## 💬 How It Works
 
-You can manage the SQLite schema using these commands from within the `backend/` directory:
+### Main Menu
+Send **"hi"** to get the interactive menu:
 
-*   **Push Schema Changes**: Sync your `src/db/schema.js` modifications directly to the database file without running a full migration pipeline:
-    ```bash
-    npm run db:push
-    ```
-*   **Generate Migration files**: Write schema history changes into SQL statements:
-    ```bash
-    npm run db:generate
-    ```
-*   **Drizzle Studio**: Start a visual database explorer locally:
-    ```bash
-    npm run db:studio
-    ```
+```
+📊 Tally
+Welcome back, Omkar! 👋
+
+[📋 Open Menu]
+  ━━━ 💰 Expenses ━━━
+    ➕ Log Expense
+    📋 Recent Expenses
+    🗑️ Delete Expense
+  ━━━ 📊 Reports ━━━
+    📈 Monthly Summary
+  ━━━ 💳 Budgets ━━━
+    👀 View Budgets
+    ✏️ Set Budget
+  ━━━ 🎯 Savings Goals ━━━
+    🎯 View Goals
+    ➕ Create Goal
+    💰 Fund Goal
+```
+
+### Quick Commands
+
+| Command | What it does |
+|---------|-------------|
+| `hi` / `menu` / `help` | Show the interactive menu |
+| `log` / `add` | Start logging an expense |
+| `summary` / `bal` | This month's spending breakdown |
+| `recent` / `history` | Last 10 expenses |
+| `budget` | Budget overview with progress bars |
+| `goals` / `savings` | Savings goals with progress |
+| `cancel` | Cancel any in-progress action |
+
+### Sample Conversation
+
+```
+You:  hi
+Bot:  📊 Tally — [📋 Open Menu]
+
+You:  [tap: ➕ Log Expense]
+Bot:  How much did you spend?
+
+You:  450
+Bot:  [📂 Pick Category — 8 options]
+
+You:  [tap: 🍔 Food & Dining]
+Bot:  What was this expense for?
+
+You:  Dinner at restaurant
+Bot:  [📅 Today] [📅 Yesterday] [📅 Other Date]
+
+You:  [tap: 📅 Today]
+Bot:  📋 Confirm: 🍔 ₹450.00 — Dinner at restaurant — 2026-11-24
+      [✅ Save] [❌ Cancel]
+
+You:  [tap: ✅ Save]
+Bot:  ✅ Expense Logged! 🍔 Food & Dining ₹450.00
+```
 
 ---
 
-## 📡 API Endpoints Reference
+## 📡 API Endpoints
 
-### Authentication (`/api/auth`)
-*   `POST /api/auth/register`: Create a new user account. Required body: `{ email, password, name }`. Returns user profile and JWT.
-*   `POST /api/auth/login`: Authenticate an existing user. Required body: `{ email, password }`. Returns user profile and JWT.
-*   `GET /api/auth/me`: Get profile info for the currently authenticated user based on the authorization header.
-
-### Expenses (`/api/expenses`)
-*   `GET /api/expenses`: Retrieve all logged expenses for the authenticated user (sorted by date desc).
-*   `POST /api/expenses`: Log an expense manually. Required body: `{ amount, category, description, date }`.
-*   `DELETE /api/expenses/:id`: Delete an expense by ID (only if owned by the logged-in user).
-*   `POST /api/expenses/quick-log`: Parse a natural language text command to structure an expense transaction. Required body: `{ text }`.
-*   `POST /api/expenses/scan`: Upload a receipt image file (field name: `receipt`, max 5MB) to extract details.
-
-### Budgets (`/api/budgets`)
-*   `GET /api/budgets`: Fetch all category budget limits for a given month. Accepts optional query parameter `?month=YYYY-MM`.
-*   `POST /api/budgets`: Create or update a budget limit. Required body: `{ category, limitAmount, month }`.
-
-### Chatbot (`/api/chatbot`)
-*   `POST /api/chatbot`: Conversation loop with the AI financial assistant. Sends the current message and chat history. The router injects the user's spending data and budget limits as context to supply personalized financial advice. Required body: `{ message, history }`.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/webhook` | Meta webhook verification handshake |
+| `POST` | `/webhook` | Receive incoming WhatsApp messages |
+| `GET` | `/health` | Server health check |
 
 ---
 
-## 💡 Environment Checklist
+## 🗄️ Database Management
 
-*   Ensure you have created the `.env` file inside `backend/`.
-*   Make sure `JWT_SECRET` is not set to default values in production.
-*   To enable real-time image OCR scanning and conversational budgeting, make sure to set `GROQ_API_KEY`.
+```bash
+# Push schema changes to database
+npm run db:push
+
+# Generate SQL migration files
+npm run db:generate
+
+# Open visual database explorer
+npm run db:studio
+```
+
+---
+
+## 🚀 Deployment
+
+See the [WhatsApp Setup Guide](docs/WHATSAPP_SETUP.md) for detailed deployment instructions covering:
+
+- **Railway** — recommended for production
+- **Render** — free tier available
+- **ngrok** — for local development
+
+---
+
+## 💡 Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `PORT` | No | Server port (default: 5000) |
+| `WHATSAPP_ACCESS_TOKEN` | Yes | Meta API access token |
+| `WHATSAPP_PHONE_NUMBER_ID` | Yes | Your WhatsApp phone number ID |
+| `WHATSAPP_BUSINESS_ACCOUNT_ID` | Yes | Your business account ID |
+| `WEBHOOK_VERIFY_TOKEN` | Yes | Webhook verification secret |
+| `DATABASE_URL` | No | Turso DB URL (default: local SQLite) |
+| `DATABASE_AUTH_TOKEN` | No | Turso auth token |
+
+---
+
+## 📄 License
+
+ISC
